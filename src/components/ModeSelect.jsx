@@ -1,34 +1,8 @@
 import styles from './ModeSelect.module.css';
 
-const modes = [
-  {
-    key: 'lightning',
-    icon: '⚡',
-    title: 'LIGHTNING ROUND',
-    jp: '稲妻',
-    description:
-      'A character flashes for 1.5 seconds. Memorise their stats. Pick their strongest stat from memory. Nail it — they join at full power. Miss — they join at half power.',
-    tagLabel: 'MEMORY & KNOWLEDGE',
-    tagClass: styles.cardTagLightning,
-    cardClass: styles.lightning,
-  },
-  {
-    key: 'race',
-    icon: '🏃',
-    title: 'RACE MODE',
-    jp: 'レース',
-    description:
-      'Characters race across the screen at increasing speed. Tap to catch exactly 3. You see their name but not their stats — reflexes and anime knowledge decide your fate.',
-    tagLabel: 'REFLEXES & INSTINCT',
-    tagClass: styles.cardTagRace,
-    cardClass: styles.race,
-  },
-];
-
 export default function ModeSelect({ onSelect }) {
   return (
     <div className={styles.root}>
-
       <div className={styles.speedLines} />
 
       <header className={styles.header}>
@@ -44,32 +18,31 @@ export default function ModeSelect({ onSelect }) {
         DRAFT YOUR SQUAD. MASTER YOUR MOVES. CLAIM GLORY.
       </p>
 
-      <div className={styles.cardsRow}>
-        {modes.map((mode) => (
-          <button
-            key={mode.key}
-            className={`${styles.card} ${mode.cardClass}`}
-            onClick={() => onSelect(mode.key)}
-          >
-            <div className={`${styles.cardTag} ${mode.tagClass}`}>
-              {mode.tagLabel}
-            </div>
-            <div className={styles.cardIcon}>{mode.icon}</div>
-            <div className={styles.cardTitle}>{mode.title}</div>
-            <div className={styles.cardJp}>{mode.jp}</div>
-            <div className={styles.cardDivider} />
-            <p className={styles.cardDesc}>{mode.description}</p>
-            <div className={styles.cardCta}>SELECT MODE →</div>
-          </button>
-        ))}
+      <div className={styles.card}>
+        <div className={styles.cardTag}>⚔️ STRATEGY DRAFT</div>
+        <div className={styles.cardIcon}>🏆</div>
+        <div className={styles.cardTitle}>STAT DRAFT</div>
+        <div className={styles.cardJp}>戦略 · STRATEGY</div>
+        <div className={styles.cardDivider} />
+        <p className={styles.cardDesc}>
+          12 characters. 10 draft points. Pick 3 fighters
+          that fit your budget — S-tier costs more, C-tier
+          costs less. A balanced team beats a greedy one.
+          Snake order randomised every game. Outsmart the CPU.
+        </p>
+        <button
+          className={styles.cardCta}
+          onClick={() => onSelect('draft')}
+        >
+          ENTER DRAFT →
+        </button>
       </div>
 
       <footer className={styles.footer}>
-        <span className={styles.footerDot}>●</span>
-        SHINKU v1.0 &nbsp;·&nbsp; BUILD YOUR LEGEND
-        <span className={styles.footerDot}>●</span>
+        <span className={styles.footerDot}>◆</span>
+        SHINKU v2.0 &nbsp;·&nbsp; BUILD YOUR LEGEND
+        <span className={styles.footerDot}>◆</span>
       </footer>
-
     </div>
   );
 }

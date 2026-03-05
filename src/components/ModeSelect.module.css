@@ -93,76 +93,58 @@
   z-index: 1;
 }
 
+/* ── Single mode card ── */
 .card {
-  flex: 1 1 320px;
-  max-width: 420px;
+  width: 100%;
+  max-width: 480px;
   background: var(--white);
   border: 3px solid var(--ink);
-  box-shadow: 6px 6px 0px var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
   border-radius: 2px;
-  padding: clamp(20px, 4vw, 32px);
-  cursor: pointer;
+  padding: clamp(28px, 5vw, 44px) clamp(24px, 4vw, 40px);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-  text-align: left;
-}
-
-.card:hover,
-.card:focus {
-  outline: none;
-  transform: translate(-3px, -3px) scale(1.01);
-}
-
-.card.lightning:hover,
-.card.lightning:focus {
-  border-color: var(--gold);
-  box-shadow: 6px 6px 0px var(--gold);
-}
-
-.card.race:hover,
-.card.race:focus {
-  border-color: var(--red);
-  box-shadow: 6px 6px 0px var(--red);
+  align-items: center;      /* ← centers everything */
+  gap: 12px;
+  text-align: center;       /* ← centers all text */
+  position: relative;
+  z-index: 1;
 }
 
 .cardTag {
   font-family: var(--font-body);
-  font-size: clamp(9px, 1.2vw, 11px);
-  letter-spacing: 2px;
-  color: var(--ink);
-  padding: 3px 10px;
+  font-size: clamp(10px, 1.4vw, 12px);
+  letter-spacing: 3px;
+  color: var(--white);
+  background: var(--ink);
+  padding: 4px 14px;
   border-radius: 2px;
-  margin-bottom: 4px;
+  text-transform: uppercase;
 }
 
-.cardTagLightning { background: var(--gold); }
-.cardTagRace      { background: var(--red-bright); color: var(--white); }
-
 .cardIcon {
-  font-size: clamp(36px, 6vw, 52px);
+  font-size: clamp(40px, 7vw, 60px);
   line-height: 1;
+  margin: 4px 0;
 }
 
 .cardTitle {
   font-family: var(--font-display);
-  font-size: clamp(26px, 4vw, 36px);
-  letter-spacing: 3px;
+  font-size: clamp(32px, 6vw, 52px);
+  letter-spacing: 4px;
   color: var(--ink);
   line-height: 1;
 }
 
 .cardJp {
   font-family: var(--font-jp);
-  font-size: clamp(11px, 1.5vw, 14px);
+  font-size: clamp(12px, 1.6vw, 15px);
   color: var(--gray);
-  letter-spacing: 3px;
+  letter-spacing: 4px;
 }
 
 .cardDivider {
-  width: 100%;
+  width: 60%;
   height: 2px;
   background: var(--ink);
   margin: 4px 0;
@@ -173,38 +155,38 @@
   font-family: var(--font-body);
   font-size: clamp(12px, 1.6vw, 14px);
   color: #3a3a3a;
-  line-height: 1.7;
-  flex: 1;
+  line-height: 1.8;
+  max-width: 360px;
 }
 
+/* ── CTA button — the real fix ── */
 .cardCta {
   font-family: var(--font-display);
-  font-size: clamp(14px, 2vw, 17px);
-  letter-spacing: 2px;
-  border: 2px solid var(--ink);
-  padding: 8px 20px;
+  font-size: clamp(16px, 2.5vw, 22px);
+  letter-spacing: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 3px solid var(--ink);
+  padding: 14px 44px;
   margin-top: 8px;
   border-radius: 2px;
-  transition: all 0.18s ease;
-  align-self: stretch;
-  text-align: center;
-  color: var(--ink);
-  background: transparent;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--red);
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  align-self: stretch;      /* stretches full width of card */
 }
 
-.card:hover .cardCta,
-.card:focus .cardCta {
-  color: var(--paper);
+.cardCta:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 #7a0010;
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
 }
 
-.card.lightning:hover .cardCta,
-.card.lightning:focus .cardCta {
-  background: var(--gold);
-}
-
-.card.race:hover .cardCta,
-.card.race:focus .cardCta {
-  background: var(--red-bright);
+.cardCta:active {
+  transform: translate(1px, 1px);
+  box-shadow: 3px 3px 0 var(--red);
 }
 
 /* ── Footer ── */
@@ -223,17 +205,4 @@
 .footerDot {
   color: var(--red);
   font-size: 8px;
-}
-
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .cardsRow {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 100%;
-  }
 }

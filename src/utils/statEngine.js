@@ -17,6 +17,45 @@ export const generateStats = (seed) => {
 export const totalStats = (stats) =>
   Object.values(stats).reduce((a, b) => a + b, 0);
 
+// ── TIER SYSTEM ──
+// Thresholds are intentionally uneven — not guaranteed equal distribution
+// A pool of 12 might have 0 S-tiers or 3, just like real life
+export const getTier = (stats) => {
+  const total = totalStats(stats);
+  if (total >= 420) return 'S';
+  if (total >= 370) return 'A';
+  if (total >= 330) return 'B';
+  return 'C';
+};
+
+export const getTierCost = (stats) => {
+  const tier = getTier(stats);
+  if (tier === 'S') return 5;
+  if (tier === 'A') return 3;
+  if (tier === 'B') return 2;
+  return 1;
+};
+
+export const TIER_COLORS = {
+  S: { bg: '#c1121f', text: '#ffffff', label: 'S' },
+  A: { bg: '#b5860d', text: '#ffffff', label: 'A' },
+  B: { bg: '#023e8a', text: '#ffffff', label: 'B' },
+  C: { bg: '#4a4a4a', text: '#ffffff', label: 'C' },
+};
+
+// ── SNAKE DRAFT ORDER ──
+// Randomises who picks first, then snakes
+// Returns array of 6 turns: 'player' | 'cpu'
+export const generateSnakeOrder = () => {
+  const playerFirst = Math.random() < 0.5;
+
+  // Snake pattern: first → second → second → first → first → second
+  const first  = playerFirst ? 'player' : 'cpu';
+  const second = playerFirst ? 'cpu'    : 'player';
+
+  return [first, second, second, first, first, second];
+};
+
 // ── MOVE SYSTEM ──
 // Attack > Special > Defend > Attack (rock paper scissors)
 export const MOVES = {
@@ -36,7 +75,7 @@ export const resolveMoveWinner = (playerMove, opponentMove) => {
   return 'opponent';
 };
 
-// ── DICE ROLL ──
+// ── DICE ──
 export const rollDice = () => Math.floor(Math.random() * 6) + 1;
 
 // ── DAMAGE CALCULATION ──
@@ -45,8 +84,49 @@ export const calculateDamage = (character, move, diceRoll, powerMultiplier = 1) 
   return Math.floor(baseStat * diceRoll * powerMultiplier);
 };
 
-// ── AI MOVE (simple weighted random, not pure random) ──
-// AI slightly favors ATTACK but is not predictable
+// ── CPU DRAFT AI ──
+// Mixed strategy — unpredictably combines greedy, efficient, and spiteful
+export const getCpuPick = (availableChars, cpuBudget, playerBudget, cpuTeam, playerTeam) => {
+  // Only consider characters the CPU can actually afford
+  const affordable = availableChars.filter(
+    (c) => getTierCost(c.stats) <= cpuBudget
+  );
+  if (affordable.length === 0) return availableChars[0]; // fallback
+
+  // Roll to decide strategy this turn — truly random each pick
+  const roll = Math.random();
+
+  // ── GREEDY (35%) — just take the highest total stat character ──
+  if (roll < 0.35) {
+    return affordable.reduce((best, c) =>
+      totalStats(c.stats) > totalStats(best.stats) ? c : best
+    );
+  }
+
+  // ── SPITEFUL (30%) — take whatever the player would most want ──
+  // i.e. the highest stat character the player can still afford
+  if (roll < 0.65) {
+    const playerAffordable = affordable.filter(
+      (c) => getTierCost(c.stats) <= playerBudget
+    );
+    if (playerAffordable.length > 0) {
+      return playerAffordable.reduce((best, c) =>
+        totalStats(c.stats) > totalStats(best.stats) ? c : best
+      );
+    }
+    // If player can't afford anything, fall through to efficient
+  }
+
+  // ── EFFICIENT (35%) — best value per point spent ──
+  // Picks character with highest (totalStats / cost) ratio
+  return affordable.reduce((best, c) => {
+    const bestRatio = totalStats(best.stats) / getTierCost(best.stats);
+    const cRatio    = totalStats(c.stats)    / getTierCost(c.stats);
+    return cRatio > bestRatio ? c : best;
+  });
+};
+
+// ── AI BATTLE MOVE ──
 export const getAIMove = () => {
   const roll = Math.random();
   if (roll < 0.4) return 'ATTACK';
