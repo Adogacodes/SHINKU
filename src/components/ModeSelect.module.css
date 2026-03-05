@@ -1,0 +1,239 @@
+.root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 5vw, 60px) clamp(16px, 4vw, 40px);
+  position: relative;
+  overflow: hidden;
+  gap: clamp(16px, 3vw, 28px);
+}
+
+/* ── Background speed lines ── */
+.speedLines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    transparent 3.5deg,
+    rgba(0, 0, 0, 0.025) 3.5deg,
+    rgba(0, 0, 0, 0.025) 4deg
+  );
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.5vw, 13px);
+  letter-spacing: 4px;
+  color: var(--gray);
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 14vw, 120px);
+  letter-spacing: 8px;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+
+.titleRed {
+  color: var(--red);
+}
+
+.titleJp {
+  font-family: var(--font-jp);
+  font-size: clamp(11px, 1.8vw, 15px);
+  color: var(--gray);
+  letter-spacing: 6px;
+  margin-top: 4px;
+}
+
+.titleUnderline {
+  width: clamp(60px, 10vw, 100px);
+  height: 4px;
+  background: var(--red);
+  margin: 12px auto 0;
+}
+
+/* ── Subtitle ── */
+.subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.6vw, 13px);
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Mode Cards ── */
+.cardsRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 28px);
+  width: 100%;
+  max-width: 860px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  flex: 1 1 320px;
+  max-width: 420px;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0px var(--ink);
+  border-radius: 2px;
+  padding: clamp(20px, 4vw, 32px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: left;
+}
+
+.card:hover,
+.card:focus {
+  outline: none;
+  transform: translate(-3px, -3px) scale(1.01);
+}
+
+.card.lightning:hover,
+.card.lightning:focus {
+  border-color: var(--gold);
+  box-shadow: 6px 6px 0px var(--gold);
+}
+
+.card.race:hover,
+.card.race:focus {
+  border-color: var(--red);
+  box-shadow: 6px 6px 0px var(--red);
+}
+
+.cardTag {
+  font-family: var(--font-body);
+  font-size: clamp(9px, 1.2vw, 11px);
+  letter-spacing: 2px;
+  color: var(--ink);
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.cardTagLightning { background: var(--gold); }
+.cardTagRace      { background: var(--red-bright); color: var(--white); }
+
+.cardIcon {
+  font-size: clamp(36px, 6vw, 52px);
+  line-height: 1;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 36px);
+  letter-spacing: 3px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.cardJp {
+  font-family: var(--font-jp);
+  font-size: clamp(11px, 1.5vw, 14px);
+  color: var(--gray);
+  letter-spacing: 3px;
+}
+
+.cardDivider {
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  margin: 4px 0;
+  opacity: 0.15;
+}
+
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.6vw, 14px);
+  color: #3a3a3a;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.cardCta {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2vw, 17px);
+  letter-spacing: 2px;
+  border: 2px solid var(--ink);
+  padding: 8px 20px;
+  margin-top: 8px;
+  border-radius: 2px;
+  transition: all 0.18s ease;
+  align-self: stretch;
+  text-align: center;
+  color: var(--ink);
+  background: transparent;
+}
+
+.card:hover .cardCta,
+.card:focus .cardCta {
+  color: var(--paper);
+}
+
+.card.lightning:hover .cardCta,
+.card.lightning:focus .cardCta {
+  background: var(--gold);
+}
+
+.card.race:hover .cardCta,
+.card.race:focus .cardCta {
+  background: var(--red-bright);
+}
+
+/* ── Footer ── */
+.footer {
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.4vw, 12px);
+  letter-spacing: 3px;
+  color: #9a9a9a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.footerDot {
+  color: var(--red);
+  font-size: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .cardsRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+  }
+}

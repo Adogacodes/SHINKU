@@ -1,0 +1,306 @@
+/* ── Root ── */
+.root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 5vw, 60px) clamp(16px, 4vw, 40px);
+  position: relative;
+  overflow: hidden;
+  gap: clamp(16px, 3vw, 28px);
+}
+
+.speedLines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    transparent 3.5deg,
+    rgba(0, 0, 0, 0.025) 3.5deg,
+    rgba(0, 0, 0, 0.025) 4deg
+  );
+}
+
+/* ── Ink splash background accent ── */
+.inkSplash {
+  position: absolute;
+  width: clamp(260px, 50vw, 480px);
+  height: clamp(260px, 50vw, 480px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.06;
+}
+
+.inkSplash.win  { background: #2d6a4f; }
+.inkSplash.lose { background: var(--red); }
+
+/* ── Outcome block ── */
+.outcomeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.outcomeIcon {
+  font-size: clamp(52px, 10vw, 80px);
+  line-height: 1;
+}
+
+.outcomeTitle {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 12vw, 96px);
+  letter-spacing: 6px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.outcomeTitle.win  { color: #2d6a4f; }
+.outcomeTitle.lose { color: var(--red); }
+
+.outcomeJp {
+  font-family: var(--font-jp);
+  font-size: clamp(12px, 2vw, 16px);
+  letter-spacing: 6px;
+  color: var(--gray);
+  margin-top: 4px;
+}
+
+.outcomeUnderline {
+  width: clamp(60px, 12vw, 100px);
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.outcomeUnderline.win  { background: #2d6a4f; }
+.outcomeUnderline.lose { background: var(--red); }
+
+.outcomeSubtitle {
+  font-family: var(--font-body);
+  font-size: clamp(11px, 1.8vw, 14px);
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── Team summary panel ── */
+.summaryPanel {
+  width: 100%;
+  max-width: 700px;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  border-radius: 2px;
+  padding: clamp(16px, 3vw, 28px);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summaryTitle {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2.5vw, 18px);
+  letter-spacing: 4px;
+  color: var(--gray);
+  text-align: center;
+  border-bottom: 2px solid var(--paper-dark);
+  padding-bottom: 10px;
+}
+
+/* ── Fighter row ── */
+.fighterRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 16px);
+  padding: clamp(8px, 1.5vw, 12px);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  animation: slide-up 0.4s ease forwards;
+  opacity: 0;
+}
+
+.fighterRow:nth-child(2) { animation-delay: 0.1s; }
+.fighterRow:nth-child(3) { animation-delay: 0.2s; }
+.fighterRow:nth-child(4) { animation-delay: 0.3s; }
+
+.fighterThumb {
+  width: clamp(44px, 7vw, 60px);
+  height: clamp(44px, 7vw, 60px);
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.fighterInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.fighterName {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2.2vw, 18px);
+  letter-spacing: 2px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fighterAnime {
+  font-family: var(--font-body);
+  font-size: clamp(9px, 1.3vw, 11px);
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+
+/* HP remaining bar on result */
+.hpBarWrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hpBarTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--paper-dark);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hpBarFill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hpBarFill.high   { background: #2d6a4f; }
+.hpBarFill.medium { background: var(--gold); }
+.hpBarFill.low    { background: var(--red); }
+.hpBarFill.dead   { background: var(--paper-dark); width: 0% !important; }
+
+.hpBarLabel {
+  font-family: var(--font-display);
+  font-size: clamp(10px, 1.5vw, 13px);
+  color: var(--ink);
+  letter-spacing: 1px;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Power badge */
+.powerBadge {
+  font-family: var(--font-display);
+  font-size: clamp(8px, 1.2vw, 10px);
+  letter-spacing: 2px;
+  padding: 2px 8px;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.powerBadge.full { background: #d8f3dc; color: #2d6a4f; }
+.powerBadge.half { background: #ffe5e5; color: var(--red); }
+
+/* ── Action buttons ── */
+.actions {
+  display: flex;
+  gap: clamp(10px, 2vw, 16px);
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.playAgainBtn {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2.5vw, 22px);
+  letter-spacing: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 3px solid var(--ink);
+  padding: clamp(12px, 2vw, 16px) clamp(28px, 5vw, 48px);
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--red);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 2px;
+}
+
+.playAgainBtn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--red);
+}
+
+.changeModeBtn {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 3px;
+  background: transparent;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  padding: clamp(12px, 2vw, 16px) clamp(20px, 4vw, 36px);
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 2px;
+}
+
+.changeModeBtn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* ── Footer ── */
+.footer {
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.4vw, 12px);
+  letter-spacing: 3px;
+  color: #9a9a9a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.footerDot {
+  color: var(--red);
+  font-size: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .playAgainBtn,
+  .changeModeBtn {
+    text-align: center;
+  }
+}

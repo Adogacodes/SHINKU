@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Serif+JP:wght@400;700&family=Special+Elite&display=swap');
+
+/* ── CSS VARIABLES ── */
+:root {
+  --ink: #0a0a0a;
+  --paper: #f0ebe0;
+  --paper-dark: #ddd5c0;
+  --red: #c1121f;
+  --red-bright: #e63946;
+  --gold: #e9c46a;
+  --blue-ink: #023e8a;
+  --white: #ffffff;
+  --gray: #6b6b6b;
+  --shadow: rgba(0, 0, 0, 0.35);
+
+  --font-display: 'Bangers', cursive;
+  --font-body: 'Special Elite', cursive;
+  --font-jp: 'Noto Serif JP', serif;
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-width: 0;         /* ← this is the key line */
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+
+  /* Manga halftone dot texture */
+  background-image: radial-gradient(circle, #00000012 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ── INK SPLATTER UTILITY ── */
+.ink-border {
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0px var(--ink);
+}
+
+.ink-border-red {
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0px var(--red);
+}
+
+/* ── PANEL (manga panel style) ── */
+.manga-panel {
+  background: var(--white);
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0px var(--ink);
+  border-radius: 2px;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 3px solid var(--ink);
+  padding: 12px 32px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--red);
+  transition: transform 0.1s, box-shadow 0.1s;
+  border-radius: 2px;
+}
+
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--red);
+}
+
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--red);
+}
+
+.btn-secondary {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  background: transparent;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  padding: 10px 28px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s;
+  border-radius: 2px;
+}
+
+.btn-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--ink);
+}
+
+/* ── SPEED LINES (manga action bg) ── */
+.speed-lines {
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    transparent 3.5deg,
+    rgba(0,0,0,0.03) 3.5deg,
+    rgba(0,0,0,0.03) 4deg
+  );
+}
+
+/* ── UTILITY ── */
+.text-display {
+  font-family: var(--font-display);
+  letter-spacing: 2px;
+}
+
+.text-jp {
+  font-family: var(--font-jp);
+}
+
+.text-red { color: var(--red); }
+.text-gold { color: var(--gold); }
+.text-ink { color: var(--ink); }
+.text-paper { color: var(--paper); }
+
+/* ── ANIMATIONS ── */
+@keyframes pop-in {
+  0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+  70% { transform: scale(1.1) rotate(1deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px) rotate(-2deg); }
+  40% { transform: translateX(8px) rotate(2deg); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+@keyframes flash-in {
+  0% { opacity: 0; filter: brightness(3); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes ink-drip {
+  0% { transform: scaleY(0); transform-origin: top; }
+  100% { transform: scaleY(1); transform-origin: top; }
+}
+
+.anim-pop { animation: pop-in 0.4s cubic-bezier(.34,1.56,.64,1) forwards; }
+.anim-shake { animation: shake 0.5s ease forwards; }
+.anim-flash { animation: flash-in 0.3s ease forwards; }
+.anim-slide-up { animation: slide-up 0.4s ease forwards; }
+
+/* ── RESPONSIVE BASE ── */
+html {
+  font-size: 16px;
+}
+
+/* Mobile first — scale up */
+@media (min-width: 480px)  { html { font-size: 17px; } }
+@media (min-width: 768px)  { html { font-size: 18px; } }
+@media (min-width: 1024px) { html { font-size: 19px; } }
+
+/* Safe area for mobile notches */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
