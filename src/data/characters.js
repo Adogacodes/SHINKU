@@ -25,7 +25,7 @@ export const ALL_CHARACTERS = [
   // ── DRAGON BALL ──────────────────────────────────────────
 
   {
-    mal_id: 246,
+    mal_id: null,
     name: 'Son Goku',
     anime: 'Dragon Ball Z',
     image: 'https://myanimelist.net/images/characters/15/72546.jpg',
@@ -200,10 +200,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 196263,
+    mal_id: 164482,
     name: 'Maki Zenin',
     anime: 'Jujutsu Kaisen',
-    image: 'https://cdn.myanimelist.net/images/characters/3/436537.jpg',
+    image: 'https://myanimelist.net/images/characters/11/620495.jpg',
     stats: {
       power:        82,
       speed:        90,
@@ -213,10 +213,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 196265,
+    mal_id: null,
     name: 'Mei Mei',
     anime: 'Jujutsu Kaisen',
-    image: 'https://cdn.myanimelist.net/images/characters/12/436543.jpg',
+    image: 'https://myanimelist.net/images/characters/8/435405.jpg',
     stats: {
       power:        78,
       speed:        82,
@@ -229,10 +229,10 @@ export const ALL_CHARACTERS = [
   // ── CHAINSAW MAN ─────────────────────────────────────────
 
   {
-    mal_id: 167409,
+    mal_id: 170732,
     name: 'Denji',
     anime: 'Chainsaw Man',
-    image: 'https://cdn.myanimelist.net/images/characters/9/492835.jpg',
+    image: 'https://myanimelist.net/images/characters/3/492407.jpg',
     stats: {
       power:        82,
       speed:        80,
@@ -242,10 +242,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 167411,
+    mal_id: 170734,
     name: 'Makima',
     anime: 'Chainsaw Man',
-    image: 'https://cdn.myanimelist.net/images/characters/16/492837.jpg',
+    image: 'https://myanimelist.net/images/characters/10/483734.jpg',
     stats: {
       power:        93,
       speed:        85,
@@ -258,10 +258,10 @@ export const ALL_CHARACTERS = [
   // ── ONE PIECE ────────────────────────────────────────────
 
   {
-    mal_id: 62,
+    mal_id: 40,
     name: 'Monkey D. Luffy',
     anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/9/310307.jpg',
+    image: 'https://myanimelist.net/images/characters/9/310307.jpg',
     stats: {
       power:        95,
       speed:        93,
@@ -271,10 +271,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 40,
+    mal_id: 62,
     name: 'Roronoa Zoro',
     anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/3/100534.jpg',
+    image: 'https://myanimelist.net/images/characters/3/100534.jpg',
     stats: {
       power:        93,
       speed:        89,
@@ -284,10 +284,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 641,
+    mal_id: 305,
     name: 'Sanji',
     anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/8/116377.jpg',
+    image: 'https://myanimelist.net/images/characters/5/136769.jpg',
     stats: {
       power:        90,
       speed:        92,
@@ -297,10 +297,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 1458,
+    mal_id: 2751,
     name: 'Whitebeard',
     anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/2/88166.jpg',
+    image: 'https://myanimelist.net/images/characters/3/100236.jpg',
     stats: {
       power:        98,
       speed:        82,
@@ -310,10 +310,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 2370,
+    mal_id: 727,
     name: 'Shanks',
     anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/6/284174.jpg',
+    image: 'https://myanimelist.net/images/characters/10/434870.jpg',
     stats: {
       power:        95,
       speed:        91,
@@ -322,20 +322,7 @@ export const ALL_CHARACTERS = [
       stamina:      90,
     },
   },
-  {
-    mal_id: 3123,
-    name: 'Kaido',
-    anime: 'One Piece',
-    image: 'https://cdn.myanimelist.net/images/characters/14/399895.jpg',
-    stats: {
-      power:        97,
-      speed:        85,
-      defense:      99,
-      intelligence: 80,
-      stamina:      99,
-    },
-  },
-
+  
   // ── BLEACH ───────────────────────────────────────────────
 
   {
