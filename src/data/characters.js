@@ -578,7 +578,7 @@ export const ALL_CHARACTERS = [
     mal_id: 45627,
     name: 'Levi Ackerman',
     anime: 'Attack on Titan',
-    image: 'https://myanimelist.net/images/characters/12/622510.jpg',
+    image: 'https://myanimelist.net/images/characters/4/364456.jpg',
     stats: {
       power:        84,
       speed:        96,
@@ -681,7 +681,7 @@ export const ALL_CHARACTERS = [
     mal_id: 65643,
     name: 'Koro-sensei',
     anime: 'Assassination Classroom',
-    image: 'https://myanimelist.net/images/characters/12/542186.jpg',
+    image: 'https://myanimelist.net/images/characters/9/277325.jpg',
     stats: {
       power:        88,
       speed:        99,
