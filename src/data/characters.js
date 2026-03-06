@@ -25,7 +25,7 @@ export const ALL_CHARACTERS = [
   // ── DRAGON BALL ──────────────────────────────────────────
 
   {
-    mal_id: null,
+    mal_id: 246,
     name: 'Son Goku',
     anime: 'Dragon Ball Z',
     image: 'https://myanimelist.net/images/characters/15/72546.jpg',
@@ -213,7 +213,7 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: null,
+    mal_id: 180766,
     name: 'Mei Mei',
     anime: 'Jujutsu Kaisen',
     image: 'https://myanimelist.net/images/characters/8/435405.jpg',
