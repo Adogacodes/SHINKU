@@ -70,7 +70,7 @@ export const ALL_CHARACTERS = [
     mal_id: 17,
     name: 'Naruto Uzumaki',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/2/284121.jpg',
+    image: 'https://myanimelist.net/images/characters/9/562071.jpg',
     stats: {
       power:        93,
       speed:        92,
@@ -83,7 +83,7 @@ export const ALL_CHARACTERS = [
     mal_id: 13,
     name: 'Sasuke Uchiha',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/9/131317.jpg',
+    image: 'https://myanimelist.net/images/characters/14/70057.jpg',
     stats: {
       power:        93,
       speed:        94,
@@ -342,7 +342,7 @@ export const ALL_CHARACTERS = [
     mal_id: 1086,
     name: 'Sosuke Aizen',
     anime: 'Bleach',
-    image: 'https://cdn.myanimelist.net/images/characters/9/72529.jpg',
+    image: 'https://myanimelist.net/images/characters/8/60053.jpg',
     stats: {
       power:        95,
       speed:        93,
@@ -352,10 +352,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 3722,
+    mal_id: 909,
     name: 'Kenpachi Zaraki',
     anime: 'Bleach',
-    image: 'https://cdn.myanimelist.net/images/characters/16/72544.jpg',
+    image: 'https://myanimelist.net/images/characters/8/150265.jpg',
     stats: {
       power:        95,
       speed:        87,
@@ -365,10 +365,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 1240,
+    mal_id: 68537,
     name: 'Yhwach',
     anime: 'Bleach',
-    image: 'https://cdn.myanimelist.net/images/characters/3/272534.jpg',
+    image: 'https://myanimelist.net/images/characters/8/396645.jpg',
     stats: {
       power:        98,
       speed:        90,
@@ -381,10 +381,10 @@ export const ALL_CHARACTERS = [
   // ── HUNTER X HUNTER ──────────────────────────────────────
 
   {
-    mal_id: 188,
+    mal_id: 30,
     name: 'Gon Freecss',
     anime: 'Hunter x Hunter',
-    image: 'https://cdn.myanimelist.net/images/characters/11/284031.jpg',
+    image: 'https://myanimelist.net/images/characters/11/174517.jpg',
     stats: {
       power:        88,
       speed:        87,
@@ -394,10 +394,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 191,
+    mal_id: 27,
     name: 'Killua Zoldyck',
     anime: 'Hunter x Hunter',
-    image: 'https://cdn.myanimelist.net/images/characters/7/284033.jpg',
+    image: 'https://myanimelist.net/images/characters/14/219161.jpg',
     stats: {
       power:        86,
       speed:        96,
@@ -407,10 +407,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 41408,
+    mal_id: 23277,
     name: 'Meruem',
     anime: 'Hunter x Hunter',
-    image: 'https://cdn.myanimelist.net/images/characters/7/253534.jpg',
+    image: 'https://myanimelist.net/images/characters/2/215479.jpg',
     stats: {
       power:        97,
       speed:        96,
@@ -420,10 +420,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 34470,
+    mal_id: 31,
     name: 'Hisoka Morow',
     anime: 'Hunter x Hunter',
-    image: 'https://cdn.myanimelist.net/images/characters/4/284034.jpg',
+    image: 'https://myanimelist.net/images/characters/3/174561.jpg',
     stats: {
       power:        89,
       speed:        91,
@@ -436,10 +436,10 @@ export const ALL_CHARACTERS = [
   // ── DEMON SLAYER ─────────────────────────────────────────
 
   {
-    mal_id: 163268,
+    mal_id: 146156,
     name: 'Tanjiro Kamado',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/10/427254.jpg',
+    image: 'https://myanimelist.net/images/characters/5/509927.jpg',
     stats: {
       power:        82,
       speed:        85,
@@ -449,10 +449,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 163271,
+    mal_id: 146158,
     name: 'Zenitsu Agatsuma',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/16/427258.jpg',
+    image: 'https://myanimelist.net/images/characters/10/459689.jpg',
     stats: {
       power:        80,
       speed:        93,
@@ -462,10 +462,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 168880,
+    mal_id: 151146,
     name: 'Gyomei Himejima',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/5/427276.jpg',
+    image: 'https://myanimelist.net/images/characters/10/550017.jpg',
     stats: {
       power:        90,
       speed:        83,
@@ -475,10 +475,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 168882,
+    mal_id: 174145,
     name: 'Kokushibo',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/4/403857.jpg',
+    image: 'https://myanimelist.net/images/characters/10/406156.jpg',
     stats: {
       power:        93,
       speed:        94,
@@ -488,10 +488,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 168879,
+    mal_id: 174147,
     name: 'Akaza',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/12/403855.jpg',
+    image: 'https://myanimelist.net/images/characters/5/464774.jpg',
     stats: {
       power:        88,
       speed:        91,
@@ -501,10 +501,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 163270,
+    mal_id: 151143,
     name: 'Rengoku Kyojuro',
     anime: 'Demon Slayer',
-    image: 'https://cdn.myanimelist.net/images/characters/14/427256.jpg',
+    image: 'https://myanimelist.net/images/characters/10/423443.jpg',
     stats: {
       power:        85,
       speed:        88,
@@ -517,10 +517,10 @@ export const ALL_CHARACTERS = [
   // ── ONE PUNCH MAN ────────────────────────────────────────
 
   {
-    mal_id: 99424,
+    mal_id: 73935,
     name: 'Saitama',
     anime: 'One Punch Man',
-    image: 'https://cdn.myanimelist.net/images/characters/15/330165.jpg',
+    image: 'https://myanimelist.net/images/characters/11/294388.jpg',
     stats: {
       power:        99,
       speed:        99,
@@ -530,10 +530,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 99427,
+    mal_id: 81929,
     name: 'Tatsumaki',
     anime: 'One Punch Man',
-    image: 'https://cdn.myanimelist.net/images/characters/9/330168.jpg',
+    image: 'https://myanimelist.net/images/characters/3/543830.jpg',
     stats: {
       power:        93,
       speed:        88,
@@ -546,10 +546,10 @@ export const ALL_CHARACTERS = [
   // ── BLACK CLOVER ─────────────────────────────────────────
 
   {
-    mal_id: 138830,
+    mal_id: 124731,
     name: 'Asta',
     anime: 'Black Clover',
-    image: 'https://cdn.myanimelist.net/images/characters/3/362066.jpg',
+    image: 'https://myanimelist.net/images/characters/16/343860.jpg',
     stats: {
       power:        88,
       speed:        87,
@@ -559,10 +559,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 138831,
+    mal_id: 124732,
     name: 'Yuno',
     anime: 'Black Clover',
-    image: 'https://cdn.myanimelist.net/images/characters/7/362067.jpg',
+    image: 'https://myanimelist.net/images/characters/13/338842.jpg',
     stats: {
       power:        87,
       speed:        90,
@@ -575,10 +575,10 @@ export const ALL_CHARACTERS = [
   // ── ATTACK ON TITAN ──────────────────────────────────────
 
   {
-    mal_id: 36828,
+    mal_id: 45627,
     name: 'Levi Ackerman',
     anime: 'Attack on Titan',
-    image: 'https://cdn.myanimelist.net/images/characters/2/241364.jpg',
+    image: 'https://myanimelist.net/images/characters/12/622510.jpg',
     stats: {
       power:        84,
       speed:        96,
@@ -588,10 +588,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 40881,
+    mal_id: 40882,
     name: 'Eren Yeager',
     anime: 'Attack on Titan',
-    image: 'https://cdn.myanimelist.net/images/characters/10/241365.jpg',
+    image: 'https://myanimelist.net/images/characters/14/517098.jpg',
     stats: {
       power:        88,
       speed:        80,
@@ -601,10 +601,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 40882,
+    mal_id: 40881,
     name: 'Mikasa Ackerman',
     anime: 'Attack on Titan',
-    image: 'https://cdn.myanimelist.net/images/characters/11/241366.jpg',
+    image: 'https://myanimelist.net/images/characters/13/478390.jpg',
     stats: {
       power:        82,
       speed:        90,
@@ -617,10 +617,10 @@ export const ALL_CHARACTERS = [
   // ── SOLO LEVELING ────────────────────────────────────────
 
   {
-    mal_id: 188583,
+    mal_id: 174185,
     name: 'Sung Jinwoo',
     anime: 'Solo Leveling',
-    image: 'https://cdn.myanimelist.net/images/characters/7/530707.jpg',
+    image: 'https://myanimelist.net/images/characters/11/395493.jpg',
     stats: {
       power:        95,
       speed:        95,
@@ -633,10 +633,10 @@ export const ALL_CHARACTERS = [
   // ── FULLMETAL ALCHEMIST: BROTHERHOOD ─────────────────────
 
   {
-    mal_id: 50010,
+    mal_id: 33816,
     name: 'Truth',
     anime: 'Fullmetal Alchemist: Brotherhood',
-    image: 'https://cdn.myanimelist.net/images/characters/13/68543.jpg',
+    image: 'https://myanimelist.net/images/characters/14/93929.jpg',
     stats: {
       power:        99,
       speed:        99,
@@ -646,10 +646,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 71,
+    mal_id: 11,
     name: 'Edward Elric',
     anime: 'Fullmetal Alchemist: Brotherhood',
-    image: 'https://cdn.myanimelist.net/images/characters/4/79004.jpg',
+    image: 'https://myanimelist.net/images/characters/11/47177.jpg',
     stats: {
       power:        78,
       speed:        82,
@@ -662,10 +662,10 @@ export const ALL_CHARACTERS = [
   // ── TOKYO GHOUL ──────────────────────────────────────────
 
   {
-    mal_id: 98828,
+    mal_id: 87275,
     name: 'Ken Kaneki',
     anime: 'Tokyo Ghoul',
-    image: 'https://cdn.myanimelist.net/images/characters/13/312897.jpg',
+    image: 'https://myanimelist.net/images/characters/15/321870.jpg',
     stats: {
       power:        88,
       speed:        87,
@@ -678,10 +678,10 @@ export const ALL_CHARACTERS = [
   // ── ASSASSINATION CLASSROOM ──────────────────────────────
 
   {
-    mal_id: 71879,
+    mal_id: 65643,
     name: 'Koro-sensei',
     anime: 'Assassination Classroom',
-    image: 'https://cdn.myanimelist.net/images/characters/4/272684.jpg',
+    image: 'https://myanimelist.net/images/characters/12/542186.jpg',
     stats: {
       power:        88,
       speed:        99,
@@ -694,10 +694,10 @@ export const ALL_CHARACTERS = [
   // ── BERSERK ──────────────────────────────────────────────
 
   {
-    mal_id: 6,
+    mal_id: 422,
     name: 'Guts',
     anime: 'Berserk',
-    image: 'https://cdn.myanimelist.net/images/characters/14/68531.jpg',
+    image: 'https://myanimelist.net/images/characters/6/554406.jpg',
     stats: {
       power:        91,
       speed:        86,
@@ -707,10 +707,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 7,
+    mal_id: 424,
     name: 'Griffith',
     anime: 'Berserk',
-    image: 'https://cdn.myanimelist.net/images/characters/15/68532.jpg',
+    image: 'https://myanimelist.net/images/characters/14/499418.jpg',
     stats: {
       power:        90,
       speed:        90,
@@ -723,10 +723,10 @@ export const ALL_CHARACTERS = [
   // ── INUYASHA ─────────────────────────────────────────────
 
   {
-    mal_id: 417,
+    mal_id: 1353,
     name: 'Inuyasha',
     anime: 'Inuyasha',
-    image: 'https://cdn.myanimelist.net/images/characters/3/72561.jpg',
+    image: 'https://myanimelist.net/images/characters/11/41190.jpg',
     stats: {
       power:        84,
       speed:        86,
@@ -739,10 +739,10 @@ export const ALL_CHARACTERS = [
   // ── SEVEN DEADLY SINS ────────────────────────────────────
 
   {
-    mal_id: 117277,
+    mal_id: 95985,
     name: 'Escanor',
     anime: 'Seven Deadly Sins',
-    image: 'https://cdn.myanimelist.net/images/characters/9/354486.jpg',
+    image: 'https://myanimelist.net/images/characters/14/372194.jpg',
     stats: {
       power:        98,
       speed:        85,
@@ -752,10 +752,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 117271,
+    mal_id: 92921,
     name: 'Meliodas',
     anime: 'Seven Deadly Sins',
-    image: 'https://cdn.myanimelist.net/images/characters/4/354479.jpg',
+    image: 'https://myanimelist.net/images/characters/2/255447.jpg',
     stats: {
       power:        95,
       speed:        93,
@@ -765,10 +765,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 117273,
+    mal_id: 77605,
     name: 'Ban',
     anime: 'Seven Deadly Sins',
-    image: 'https://cdn.myanimelist.net/images/characters/11/354482.jpg',
+    image: 'https://myanimelist.net/images/characters/2/597233.jpg',
     stats: {
       power:        88,
       speed:        90,
@@ -781,10 +781,10 @@ export const ALL_CHARACTERS = [
   // ── JOJO'S BIZARRE ADVENTURE ─────────────────────────────
 
   {
-    mal_id: 221,
+    mal_id: 4004,
     name: 'Dio Brando',
     anime: "JoJo's Bizarre Adventure",
-    image: 'https://cdn.myanimelist.net/images/characters/5/181699.jpg',
+    image: 'https://myanimelist.net/images/characters/13/328191.jpg',
     stats: {
       power:        90,
       speed:        94,
@@ -794,10 +794,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 222,
+    mal_id: 4003,
     name: 'Jotaro Kujo',
     anime: "JoJo's Bizarre Adventure",
-    image: 'https://cdn.myanimelist.net/images/characters/14/181700.jpg',
+    image: 'https://myanimelist.net/images/characters/12/440231.jpg',
     stats: {
       power:        88,
       speed:        90,
@@ -807,10 +807,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 223,
+    mal_id: 6356,
     name: 'Joseph Joestar',
     anime: "JoJo's Bizarre Adventure",
-    image: 'https://cdn.myanimelist.net/images/characters/16/181702.jpg',
+    image: 'https://myanimelist.net/images/characters/7/316615.jpg',
     stats: {
       power:        78,
       speed:        80,
@@ -823,10 +823,10 @@ export const ALL_CHARACTERS = [
   // ── MY HERO ACADEMIA ─────────────────────────────────────
 
   {
-    mal_id: 118782,
+    mal_id: 117921,
     name: 'All Might',
     anime: 'My Hero Academia',
-    image: 'https://cdn.myanimelist.net/images/characters/11/310391.jpg',
+    image: 'https://myanimelist.net/images/characters/14/310613.jpg',
     stats: {
       power:        95,
       speed:        92,
@@ -836,10 +836,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 118780,
+    mal_id: 117909,
     name: 'Izuku Midoriya',
     anime: 'My Hero Academia',
-    image: 'https://cdn.myanimelist.net/images/characters/9/310389.jpg',
+    image: 'https://myanimelist.net/images/characters/3/355122.jpg',
     stats: {
       power:        88,
       speed:        87,
@@ -849,10 +849,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 118781,
+    mal_id: 117911,
     name: 'Katsuki Bakugo',
     anime: 'My Hero Academia',
-    image: 'https://cdn.myanimelist.net/images/characters/10/310390.jpg',
+    image: 'https://myanimelist.net/images/characters/12/299406.jpg',
     stats: {
       power:        87,
       speed:        88,
@@ -862,10 +862,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 118783,
+    mal_id: 118489,
     name: 'Shoto Todoroki',
     anime: 'My Hero Academia',
-    image: 'https://cdn.myanimelist.net/images/characters/12/310393.jpg',
+    image: 'https://myanimelist.net/images/characters/12/332527.jpg',
     stats: {
       power:        87,
       speed:        84,
@@ -878,10 +878,10 @@ export const ALL_CHARACTERS = [
   // ── FATE/STAY NIGHT ──────────────────────────────────────
 
   {
-    mal_id: 969,
+    mal_id: 2514,
     name: 'Gilgamesh',
     anime: 'Fate/Stay Night',
-    image: 'https://cdn.myanimelist.net/images/characters/11/174531.jpg',
+    image: 'https://myanimelist.net/images/characters/14/378969.jpg',
     stats: {
       power:        95,
       speed:        88,
@@ -894,10 +894,10 @@ export const ALL_CHARACTERS = [
   // ── SAILOR MOON ──────────────────────────────────────────
 
   {
-    mal_id: 932,
+    mal_id: 2030,
     name: 'Usagi Tsukino',
     anime: 'Sailor Moon',
-    image: 'https://cdn.myanimelist.net/images/characters/10/72536.jpg',
+    image: 'https://myanimelist.net/images/characters/4/312776.jpg',
     stats: {
       power:        85,
       speed:        75,
@@ -910,10 +910,24 @@ export const ALL_CHARACTERS = [
   // ── AKAME GA KILL ────────────────────────────────────────
 
   {
-    mal_id: 108060,
+    mal_id: 63351,
     name: 'Akame',
     anime: 'Akame ga Kill',
-    image: 'https://cdn.myanimelist.net/images/characters/15/311975.jpg',
+    image: 'https://myanimelist.net/images/characters/8/253095.jpg',
+    stats: {
+      power:        84,
+      speed:        92,
+      defense:      76,
+      intelligence: 82,
+      stamina:      85,
+    },
+  },
+
+  {
+    mal_id: 65239,
+    name: 'Esdeath',
+    anime: 'Akame ga Kill',
+    image: 'https://myanimelist.net/images/characters/14/478361.jpg',
     stats: {
       power:        84,
       speed:        92,
@@ -926,10 +940,10 @@ export const ALL_CHARACTERS = [
   // ── CLAYMORE ─────────────────────────────────────────────
 
   {
-    mal_id: 1370,
+    mal_id: 2188,
     name: 'Clare',
     anime: 'Claymore',
-    image: 'https://cdn.myanimelist.net/images/characters/7/59401.jpg',
+    image: 'https://myanimelist.net/images/characters/16/72662.jpg',
     stats: {
       power:        78,
       speed:        82,
@@ -942,10 +956,10 @@ export const ALL_CHARACTERS = [
   // ── HELLSING ULTIMATE ────────────────────────────────────
 
   {
-    mal_id: 1466,
+    mal_id: 601,
     name: 'Alucard',
     anime: 'Hellsing Ultimate',
-    image: 'https://cdn.myanimelist.net/images/characters/16/183440.jpg',
+    image: 'https://myanimelist.net/images/characters/15/74607.jpg',
     stats: {
       power:        95,
       speed:        91,
@@ -958,10 +972,10 @@ export const ALL_CHARACTERS = [
   // ── YU YU HAKUSHO ────────────────────────────────────────
 
   {
-    mal_id: 1517,
+    mal_id: 729,
     name: 'Yusuke Urameshi',
     anime: 'Yu Yu Hakusho',
-    image: 'https://cdn.myanimelist.net/images/characters/16/68544.jpg',
+    image: 'https://myanimelist.net/images/characters/3/130535.jpg',
     stats: {
       power:        87,
       speed:        86,
@@ -971,10 +985,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 1519,
+    mal_id: 732,
     name: 'Hiei',
     anime: 'Yu Yu Hakusho',
-    image: 'https://cdn.myanimelist.net/images/characters/14/68542.jpg',
+    image: 'https://myanimelist.net/images/characters/13/76077.jpg',
     stats: {
       power:        86,
       speed:        95,
@@ -984,8 +998,8 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 1525,
-    name: 'Toguro',
+    mal_id: 7176,
+    name: 'Younger Toguro',
     anime: 'Yu Yu Hakusho',
     image: 'https://cdn.myanimelist.net/images/characters/11/68547.jpg',
     stats: {
@@ -1000,10 +1014,10 @@ export const ALL_CHARACTERS = [
   // ── FIRE FORCE ───────────────────────────────────────────
 
   {
-    mal_id: 148918,
+    mal_id: 133767,
     name: 'Shinra Kusakabe',
     anime: 'Fire Force',
-    image: 'https://cdn.myanimelist.net/images/characters/11/389786.jpg',
+    image: 'https://myanimelist.net/images/characters/11/384757.jpg',
     stats: {
       power:        85,
       speed:        94,
@@ -1013,10 +1027,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 148921,
+    mal_id: 141573,
     name: 'Benimaru Shinmon',
     anime: 'Fire Force',
-    image: 'https://cdn.myanimelist.net/images/characters/13/389789.jpg',
+    image: 'https://myanimelist.net/images/characters/16/396507.jpg',
     stats: {
       power:        90,
       speed:        90,
@@ -1029,10 +1043,10 @@ export const ALL_CHARACTERS = [
   // ── MOB PSYCHO 100 ───────────────────────────────────────
 
   {
-    mal_id: 131709,
+    mal_id: 109929,
     name: 'Shigeo Kageyama',
     anime: 'Mob Psycho 100',
-    image: 'https://cdn.myanimelist.net/images/characters/12/362079.jpg',
+    image: 'https://myanimelist.net/images/characters/2/312943.jpg',
     stats: {
       power:        97,
       speed:        80,
@@ -1045,10 +1059,10 @@ export const ALL_CHARACTERS = [
   // ── HELL'S PARADISE ──────────────────────────────────────
 
   {
-    mal_id: 189498,
+    mal_id: 171437,
     name: 'Gabimaru',
     anime: "Hell's Paradise",
-    image: 'https://cdn.myanimelist.net/images/characters/7/530697.jpg',
+    image: 'https://myanimelist.net/images/characters/13/511010.jpg',
     stats: {
       power:        84,
       speed:        88,
@@ -1061,10 +1075,10 @@ export const ALL_CHARACTERS = [
   // ── THAT TIME I GOT REINCARNATED AS A SLIME ──────────────
 
   {
-    mal_id: 158282,
+    mal_id: 131549,
     name: 'Rimuru Tempest',
     anime: 'That Time I Got Reincarnated as a Slime',
-    image: 'https://cdn.myanimelist.net/images/characters/8/408571.jpg',
+    image: 'https://myanimelist.net/images/characters/16/495971.jpg',
     stats: {
       power:        93,
       speed:        88,
@@ -1077,10 +1091,10 @@ export const ALL_CHARACTERS = [
   // ── FAIRY TAIL ───────────────────────────────────────────
 
   {
-    mal_id: 13701,
+    mal_id: 5189,
     name: 'Erza Scarlet',
     anime: 'Fairy Tail',
-    image: 'https://cdn.myanimelist.net/images/characters/11/284068.jpg',
+    image: 'https://myanimelist.net/images/characters/12/492254.jpg',
     stats: {
       power:        86,
       speed:        84,
@@ -1090,10 +1104,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 13704,
+    mal_id: 5187,
     name: 'Natsu Dragneel',
     anime: 'Fairy Tail',
-    image: 'https://cdn.myanimelist.net/images/characters/16/284071.jpg',
+    image: 'https://myanimelist.net/images/characters/15/594274.jpg',
     stats: {
       power:        88,
       speed:        85,
@@ -1106,10 +1120,10 @@ export const ALL_CHARACTERS = [
   // ── MASHLE ───────────────────────────────────────────────
 
   {
-    mal_id: 192828,
+    mal_id: 178609,
     name: 'Mash Burnedead',
     anime: 'Mashle',
-    image: 'https://cdn.myanimelist.net/images/characters/3/530661.jpg',
+    image: 'https://myanimelist.net/images/characters/12/410288.jpg',
     stats: {
       power:        92,
       speed:        88,
@@ -1122,10 +1136,10 @@ export const ALL_CHARACTERS = [
   // ── VINLAND SAGA ─────────────────────────────────────────
 
   {
-    mal_id: 138585,
+    mal_id: 10138,
     name: 'Thorfinn',
     anime: 'Vinland Saga',
-    image: 'https://cdn.myanimelist.net/images/characters/13/389781.jpg',
+    image: 'https://myanimelist.net/images/characters/7/483990.jpg',
     stats: {
       power:        82,
       speed:        91,
@@ -1138,10 +1152,10 @@ export const ALL_CHARACTERS = [
   // ── RUROUNI KENSHIN ──────────────────────────────────────
 
   {
-    mal_id: 14408,
+    mal_id: 147,
     name: 'Kenshin Himura',
     anime: 'Rurouni Kenshin',
-    image: 'https://cdn.myanimelist.net/images/characters/15/68540.jpg',
+    image: 'https://myanimelist.net/images/characters/14/517009.jpg',
     stats: {
       power:        80,
       speed:        93,
@@ -1157,7 +1171,7 @@ export const ALL_CHARACTERS = [
     mal_id: 80,
     name: 'Light Yagami',
     anime: 'Death Note',
-    image: 'https://cdn.myanimelist.net/images/characters/4/260245.jpg',
+    image: 'https://myanimelist.net/images/characters/16/581132.jpg',
     stats: {
       power:        60,
       speed:        65,
@@ -1167,10 +1181,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 81,
+    mal_id: 71,
     name: 'L Lawliet',
     anime: 'Death Note',
-    image: 'https://cdn.myanimelist.net/images/characters/15/260250.jpg',
+    image: 'https://myanimelist.net/images/characters/9/519723.jpg',
     stats: {
       power:        58,
       speed:        62,
