@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { getRandomCharacters } from '../data/characters';
-import { useCharacterImages } from '../hooks/useCharacterImages';
+
 import {
   MOVES,
   resolveMoveWinner,
@@ -87,7 +87,7 @@ function FighterCard({
     : '';
 
   // use live fetched image, fall back to hardcoded, fall back to robot
-  const imgSrc = (images && images[character.mal_id]) || character.image;
+  const imgSrc =  character.image;
 
   return (
     <div
@@ -162,8 +162,6 @@ export default function BattleScreen({
   );
 
   // fetch live images for all 6 fighters
-  const allFighters = [...playerTeam, ...opponentTeam];
-  const { images } = useCharacterImages(allFighters);
 
   const [pIndex, setPIndex] = useState(0);
   const [oIndex, setOIndex] = useState(0);
@@ -502,7 +500,6 @@ export default function BattleScreen({
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <FighterCard
             character={currentPlayer}
-            images={images}
             isPlayer
             isShaking={shakingPlayer}
             isPulsing={pulsingPlayer}
@@ -528,7 +525,6 @@ export default function BattleScreen({
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <FighterCard
             character={currentOpponent}
-            images={images}
             isPlayer={false}
             isShaking={shakingOpponent}
             isPulsing={pulsingOpponent}
