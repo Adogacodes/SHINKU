@@ -329,7 +329,7 @@ export const ALL_CHARACTERS = [
     mal_id: 5,
     name: 'Ichigo Kurosaki',
     anime: 'Bleach',
-    image: 'https://cdn.myanimelist.net/images/characters/10/72533.jpg',
+    image: 'https://myanimelist.net/images/characters/3/512788.jpg',
     stats: {
       power:        94,
       speed:        95,
@@ -339,7 +339,7 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 144,
+    mal_id: 1086,
     name: 'Sosuke Aizen',
     anime: 'Bleach',
     image: 'https://cdn.myanimelist.net/images/characters/9/72529.jpg',
