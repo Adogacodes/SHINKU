@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { getRandomCharacters } from '../data/characters';
+import { useCharacterImages } from '../hooks/useCharacterImages';
 import {
   MOVES,
   resolveMoveWinner,
@@ -12,7 +13,6 @@ import styles from './BattleScreen.module.css';
 const INITIAL_HP  = 1000;
 const STEP_DELAY  = 3000;
 
-// Battle kanji pool — F animation
 const KANJI_POOL = ['力', '撃', '斬', '必', '勝', '闘', '烈', '覇', '魂', '炎'];
 
 const hpClass = (hp) => {
@@ -22,7 +22,6 @@ const hpClass = (hp) => {
   return styles.low;
 };
 
-// replace buildOpponentTeam to not need allCharacters prop:
 const buildOpponentTeam = (playerTeam) => {
   const usedIds = new Set(playerTeam.map((c) => c.mal_id));
   return getRandomCharacters(12)
@@ -31,7 +30,6 @@ const buildOpponentTeam = (playerTeam) => {
     .map((c) => ({ ...c, hp: 1000, powerMultiplier: 1 }));
 };
 
-// ── Stat pills — B: shown inside each fighter card ──
 const STAT_KEYS = ['power', 'speed', 'defense', 'intelligence', 'stamina'];
 
 function StatPills({ stats, highlightedStat }) {
@@ -57,17 +55,17 @@ function StatPills({ stats, highlightedStat }) {
 // ── Fighter Card ──
 function FighterCard({
   character,
+  images,
   isPlayer,
   isShaking,
   isPulsing,
   isPortraitActive,
   highlightedStat,
 }) {
-  const hpPct         = Math.max(0, (character.hp / INITIAL_HP) * 100);
-  const prevHpRef     = useRef(character.hp);
+  const hpPct     = Math.max(0, (character.hp / INITIAL_HP) * 100);
+  const prevHpRef = useRef(character.hp);
   const [ghostPct, setGhostPct] = useState(hpPct);
 
-  // F: Ghost HP bar slow drain
   useEffect(() => {
     if (character.hp < prevHpRef.current) {
       const oldPct = Math.max(0, (prevHpRef.current / INITIAL_HP) * 100);
@@ -88,6 +86,9 @@ function FighterCard({
     ? isPlayer ? styles.active : styles.activeCpu
     : '';
 
+  // use live fetched image, fall back to hardcoded, fall back to robot
+  const imgSrc = (images && images[character.mal_id]) || character.image;
+
   return (
     <div
       className={`
@@ -104,10 +105,9 @@ function FighterCard({
         {isPlayer ? '— YOU —' : '— CPU —'}
       </div>
 
-      {/* B: Portrait zooms when this fighter is active */}
       <img
         className={`${styles.fighterImg} ${imgActiveClass}`}
-        src={character.image}
+        src={imgSrc}
         alt={character.name}
         onError={(e) => {
           e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.mal_id}`;
@@ -117,7 +117,6 @@ function FighterCard({
       <div className={styles.fighterName}>{character.name}</div>
       <div className={styles.fighterAnime}>{character.anime}</div>
 
-      {/* HP bar with ghost drain */}
       <div className={styles.hpWrap}>
         <div className={styles.hpLabel}>
           <span>HP</span>
@@ -132,7 +131,6 @@ function FighterCard({
         </div>
       </div>
 
-      {/* B: Stat pills — highlighted stat is the one used in last move */}
       <StatPills stats={character.stats} highlightedStat={highlightedStat} />
 
       {isPlayer && (
@@ -146,6 +144,7 @@ function FighterCard({
   );
 }
 
+// ── Main Component ──
 export default function BattleScreen({
   playerTeam: rawPlayerTeam,
   onComplete,
@@ -159,46 +158,41 @@ export default function BattleScreen({
   );
 
   const [opponentTeam, setOpponentTeam] = useState(() =>
-    buildOpponentTeam(rawPlayerTeam, allCharacters)
+    buildOpponentTeam(rawPlayerTeam)
   );
+
+  // fetch live images for all 6 fighters
+  const allFighters = [...playerTeam, ...opponentTeam];
+  const { images } = useCharacterImages(allFighters);
 
   const [pIndex, setPIndex] = useState(0);
   const [oIndex, setOIndex] = useState(0);
 
-  const [phase, setPhase]             = useState('choosing');
+  const [phase,       setPhase]       = useState('choosing');
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Screen flash
   const [flashType, setFlashType] = useState('');
   const [flashKey,  setFlashKey]  = useState(0);
 
-  // Damage float
   const [damageFloat,    setDamageFloat]    = useState(null);
   const [damageFloatKey, setDamageFloatKey] = useState(0);
 
-  // Pulse
   const [pulsingPlayer,   setPulsingPlayer]   = useState(false);
   const [pulsingOpponent, setPulsingOpponent] = useState(false);
 
-  // Shake
   const [shakingPlayer,   setShakingPlayer]   = useState(false);
   const [shakingOpponent, setShakingOpponent] = useState(false);
 
-  // B: Portrait zoom — which fighter is active this message
-  const [activePortrait, setActivePortrait] = useState(null); // 'player' | 'cpu' | null
+  const [activePortrait, setActivePortrait] = useState(null);
 
-  // B: Highlighted stat in pills
   const [playerHighlightStat,   setPlayerHighlightStat]   = useState(null);
   const [opponentHighlightStat, setOpponentHighlightStat] = useState(null);
 
-  // A: Speed burst on message change
   const [showSpeedBurst, setShowSpeedBurst] = useState(false);
   const [speedBurstKey,  setSpeedBurstKey]  = useState(0);
 
-  // F: Floating kanji
-  const [kanjis, setKanjis] = useState([]); // [{ id, char, x, y }]
+  const [kanjis, setKanjis] = useState([]);
 
-  // Dialogue
   const [dialogueMsg,   setDialogueMsg]   = useState('CHOOSE YOUR MOVE!');
   const [dialogueSub,   setDialogueSub]   = useState('');
   const [dialogueCalc,  setDialogueCalc]  = useState('');
@@ -212,19 +206,16 @@ export default function BattleScreen({
   };
   useEffect(() => () => timeouts.current.forEach(clearTimeout), []);
 
-  // ── Trigger speed burst + kanji on every new message ──
   const triggerBgAnimations = useCallback(() => {
-    // A: Speed burst
     setSpeedBurstKey((k) => k + 1);
     setShowSpeedBurst(true);
     setTimeout(() => setShowSpeedBurst(false), 500);
 
-    // F: Spawn 2 random kanji at random positions
     const newKanjis = Array.from({ length: 2 }, (_, i) => ({
       id:   Date.now() + i,
       char: KANJI_POOL[Math.floor(Math.random() * KANJI_POOL.length)],
-      x:    Math.random() * 80 + 5,   // 5% – 85% from left
-      y:    Math.random() * 60 + 10,  // 10% – 70% from top
+      x:    Math.random() * 80 + 5,
+      y:    Math.random() * 60 + 10,
     }));
     setKanjis(newKanjis);
     setTimeout(() => setKanjis([]), 2600);
@@ -236,8 +227,8 @@ export default function BattleScreen({
     setDialogueColor(color);
     setDialogueCalc(calc);
     setMsgKey((k) => k + 1);
-    setActivePortrait(portrait); // B: which portrait to zoom
-    triggerBgAnimations();       // A + F: speed burst + kanji every message
+    setActivePortrait(portrait);
+    triggerBgAnimations();
   }, [triggerBgAnimations]);
 
   const flash = useCallback((type) => {
@@ -262,11 +253,13 @@ export default function BattleScreen({
     }
   }, []);
 
+  const currentPlayer   = playerTeam[pIndex];
+  const currentOpponent = opponentTeam[oIndex];
+
   const handleMove = useCallback((moveKey) => {
     if (phase !== 'choosing') return;
     setPhase('narrating');
 
-    // Clear stat highlights from previous turn
     setPlayerHighlightStat(null);
     setOpponentHighlightStat(null);
 
@@ -276,27 +269,15 @@ export default function BattleScreen({
     const winner = resolveMoveWinner(moveKey, aiMove);
     const emoji  = { ATTACK: '🗡️', DEFEND: '🛡️', SPECIAL: '⚡' };
 
-    // Which stat does each move use?
     const playerStatUsed   = moveKey === 'ATTACK' ? 'power' : moveKey === 'DEFEND' ? 'defense' : 'speed';
     const opponentStatUsed = aiMove  === 'ATTACK' ? 'power' : aiMove  === 'DEFEND' ? 'defense' : 'speed';
 
-    // Step 1 — player move, zoom player portrait
-    say(
-      `${emoji[moveKey]} YOU CHOSE: ${moveKey}`,
-      'waiting for CPU...',
-      'red', '', 'player'
-    );
+    say(`${emoji[moveKey]} YOU CHOSE: ${moveKey}`, 'waiting for CPU...', 'red', '', 'player');
 
-    // Step 2 — CPU move, zoom CPU portrait
     after(STEP_DELAY, () => {
-      say(
-        `${emoji[aiMove]} CPU CHOSE: ${aiMove}`,
-        'moves locked in!',
-        'blue', '', 'cpu'
-      );
+      say(`${emoji[aiMove]} CPU CHOSE: ${aiMove}`, 'moves locked in!', 'blue', '', 'cpu');
     });
 
-    // Step 3 — matchup result
     after(STEP_DELAY * 2, () => {
       if (winner === 'clash') {
         say(`💥 CLASH! BOTH CHOSE ${moveKey}`, 'dice will decide!', 'gold', '', null);
@@ -309,7 +290,6 @@ export default function BattleScreen({
       }
     });
 
-    // Step 4 — dice roll
     after(STEP_DELAY * 3, () => {
       if (winner === 'clash') {
         const clashPlayerWins = pDice >= oDice;
@@ -326,12 +306,11 @@ export default function BattleScreen({
       }
     });
 
-    // Step 5 — damage + D: stat calculation shown in dialogue
     after(STEP_DELAY * 4, () => {
       let dmg            = 0;
       let playerTakesHit = false;
-      let statUsed       = '';
       let statVal        = 0;
+      let statUsed       = '';
       let diceUsed       = 0;
 
       if (winner === 'player') {
@@ -366,7 +345,6 @@ export default function BattleScreen({
         }
       }
 
-      // D: Show the exact calculation in the dialogue sub line
       const calcLine = `${statUsed.toUpperCase()}: ${statVal} × 🎲${diceUsed} = ${dmg} DMG`;
 
       say(
@@ -377,7 +355,6 @@ export default function BattleScreen({
         playerTakesHit ? 'cpu' : 'player'
       );
 
-      // Step 6 — apply HP + animations
       after(STEP_DELAY, () => {
         const newPTeam = playerTeam.map((c, i) =>
           i === pIndex ? { ...c, hp: playerTakesHit ? c.hp - dmg : c.hp } : c
@@ -452,21 +429,17 @@ export default function BattleScreen({
     phase, playerTeam, opponentTeam,
     pIndex, oIndex, say, flash,
     showDamageFloat, pulse, onComplete,
+    currentPlayer, currentOpponent,
   ]);
-
-  const currentPlayer   = playerTeam[pIndex];
-  const currentOpponent = opponentTeam[oIndex];
 
   return (
     <div className={styles.root}>
       <div className={styles.speedLines} />
 
-      {/* A: Speed lines burst on new message */}
       {showSpeedBurst && (
         <div key={speedBurstKey} className={styles.speedBurst} />
       )}
 
-      {/* F: Floating kanji */}
       <div className={styles.kanjiWrap}>
         {kanjis.map((k) => (
           <div
@@ -479,12 +452,10 @@ export default function BattleScreen({
         ))}
       </div>
 
-      {/* Screen flash */}
       {flashType && (
         <div key={flashKey} className={`${styles.screenFlash} ${styles[flashType]}`} />
       )}
 
-      {/* Damage float */}
       {damageFloat && (
         <div
           key={damageFloatKey}
@@ -497,7 +468,6 @@ export default function BattleScreen({
         </div>
       )}
 
-      {/* Confirm overlay */}
       {showConfirm && (
         <div className={styles.confirmOverlay}>
           <div className={styles.confirmBox}>
@@ -518,7 +488,6 @@ export default function BattleScreen({
         </div>
       )}
 
-      {/* Header */}
       <div className={styles.header}>
         <div className={styles.roundBadge}>
           ⚔️ FIGHTER <span>{pIndex + 1}</span> / {playerTeam.length}
@@ -528,12 +497,12 @@ export default function BattleScreen({
         </button>
       </div>
 
-      {/* Arena */}
       <div className={styles.arena}>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <FighterCard
             character={currentPlayer}
+            images={images}
             isPlayer
             isShaking={shakingPlayer}
             isPulsing={pulsingPlayer}
@@ -559,6 +528,7 @@ export default function BattleScreen({
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <FighterCard
             character={currentOpponent}
+            images={images}
             isPlayer={false}
             isShaking={shakingOpponent}
             isPulsing={pulsingOpponent}
@@ -577,7 +547,6 @@ export default function BattleScreen({
 
       </div>
 
-      {/* Dialogue box */}
       <div className={styles.dialogue}>
         <div
           key={msgKey}
@@ -592,13 +561,11 @@ export default function BattleScreen({
         {dialogueSub && (
           <div className={styles.dialogueSub}>{dialogueSub}</div>
         )}
-        {/* D: Stat calculation line */}
         {dialogueCalc && (
           <div className={styles.dialogueCalc}>{dialogueCalc}</div>
         )}
       </div>
 
-      {/* Move buttons */}
       <div className={styles.moveSection}>
         <div className={styles.movePrompt}>— PICK YOUR MOVE —</div>
         <div className={styles.moveButtons}>

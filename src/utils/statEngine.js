@@ -22,9 +22,9 @@ export const totalStats = (stats) =>
 // A pool of 12 might have 0 S-tiers or 3, just like real life
 export const getTier = (stats) => {
   const total = totalStats(stats);
-  if (total >= 420) return 'S';
-  if (total >= 370) return 'A';
-  if (total >= 330) return 'B';
+  if (total >= 450) return 'S';
+  if (total >= 410) return 'A';
+  if (total >= 365) return 'B';
   return 'C';
 };
 

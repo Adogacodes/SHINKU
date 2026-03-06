@@ -28,7 +28,7 @@ export const ALL_CHARACTERS = [
     mal_id: 246,
     name: 'Son Goku',
     anime: 'Dragon Ball Z',
-    image: 'https://cdn.myanimelist.net/images/characters/14/422960.jpg',
+    image: 'https://myanimelist.net/images/characters/15/72546.jpg',
     stats: {
       power:        99,
       speed:        99,
@@ -41,7 +41,7 @@ export const ALL_CHARACTERS = [
     mal_id: 913,
     name: 'Vegeta',
     anime: 'Dragon Ball Z',
-    image: 'https://cdn.myanimelist.net/images/characters/3/72537.jpg',
+    image: 'https://myanimelist.net/images/characters/14/86185.jpg',
     stats: {
       power:        97,
       speed:        97,
@@ -51,10 +51,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 1105,
+    mal_id: 3694,
     name: 'Frieza',
     anime: 'Dragon Ball Z',
-    image: 'https://cdn.myanimelist.net/images/characters/11/72534.jpg',
+    image: 'https://myanimelist.net/images/characters/7/359258.jpg',
     stats: {
       power:        96,
       speed:        96,
@@ -93,10 +93,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 11,
+    mal_id: 53901,
     name: 'Madara Uchiha',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/8/241036.jpg',
+    image: 'https://myanimelist.net/images/characters/12/450359.jpg',
     stats: {
       power:        96,
       speed:        91,
@@ -106,10 +106,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 85,
+    mal_id: 14,
     name: 'Itachi Uchiha',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/15/293995.jpg',
+    image: 'https://myanimelist.net/images/characters/6/284123.jpg',
     stats: {
       power:        88,
       speed:        90,
@@ -119,10 +119,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 72,
+    mal_id: 85,
     name: 'Kakashi Hatake',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/7/284129.jpg',
+    image: 'https://myanimelist.net/images/characters/8/87799.jpg',
     stats: {
       power:        83,
       speed:        88,
@@ -132,10 +132,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 118737,
+    mal_id: 108297,
     name: 'Kaguya Otsutsuki',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/16/288565.jpg',
+    image: 'https://myanimelist.net/images/characters/5/292976.jpg',
     stats: {
       power:        97,
       speed:        88,
@@ -145,10 +145,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 94,
+    mal_id: 1555,
     name: 'Hinata Hyuga',
     anime: 'Naruto: Shippuden',
-    image: 'https://cdn.myanimelist.net/images/characters/7/131316.jpg',
+    image: 'https://myanimelist.net/images/characters/6/278736.jpg',
     stats: {
       power:        72,
       speed:        75,
@@ -161,10 +161,10 @@ export const ALL_CHARACTERS = [
   // ── JUJUTSU KAISEN ───────────────────────────────────────
 
   {
-    mal_id: 163603,
+    mal_id: 164471,
     name: 'Satoru Gojo',
     anime: 'Jujutsu Kaisen',
-    image: 'https://cdn.myanimelist.net/images/characters/8/436539.jpg',
+    image: 'https://myanimelist.net/images/characters/11/451983.jpg',
     stats: {
       power:        97,
       speed:        99,
@@ -174,10 +174,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 163605,
+    mal_id: 175198,
     name: 'Ryomen Sukuna',
     anime: 'Jujutsu Kaisen',
-    image: 'https://cdn.myanimelist.net/images/characters/9/436542.jpg',
+    image: 'https://myanimelist.net/images/characters/3/432947.jpg',
     stats: {
       power:        99,
       speed:        98,
@@ -187,10 +187,10 @@ export const ALL_CHARACTERS = [
     },
   },
   {
-    mal_id: 163599,
+    mal_id: 163847,
     name: 'Yuji Itadori',
     anime: 'Jujutsu Kaisen',
-    image: 'https://cdn.myanimelist.net/images/characters/2/436531.jpg',
+    image: 'https://myanimelist.net/images/characters/6/467646.jpg',
     stats: {
       power:        85,
       speed:        88,

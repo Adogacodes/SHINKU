@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { getRandomCharacters } from '../data/characters';
+import { useCharacterImages } from '../hooks/useCharacterImages';
 import {
   getTier,
   getTierCost,
@@ -10,39 +11,45 @@ import {
 } from '../utils/statEngine';
 import styles from './DraftScreen.module.css';
 
-const STAT_KEYS      = ['power', 'speed', 'defense', 'intelligence', 'stamina'];
-const BUDGET         = 10;
-const CPU_THINK_MIN  = 1200;
-const CPU_THINK_MAX  = 2400;
-const PICKED_FLASH   = 900; // ms the "just picked" highlight shows
+const STAT_KEYS     = ['power', 'speed', 'defense', 'intelligence', 'stamina'];
+const BUDGET        = 10;
+const CPU_THINK_MIN = 1200;
+const CPU_THINK_MAX = 2400;
+const PICKED_FLASH  = 900;
 
 export default function DraftScreen({ onComplete, onBack }) {
   const [characters] = useState(() => getRandomCharacters(12));
-  const loading = false;
+  const { images, ready } = useCharacterImages(characters);
+  const loading = !ready;
 
-  const [snakeOrder]    = useState(() => generateSnakeOrder());
-  const [turnIndex,     setTurnIndex]     = useState(0);
+  const [snakeOrder] = useState(() => generateSnakeOrder());
 
-  // Use a ref for available so CPU always reads the latest value
+  // All draft state in refs AND state so we can read synchronously
+  const turnIndexRef   = useRef(0);
+  const [turnIndex,    setTurnIndex]    = useState(0);
+
   const availableRef   = useRef([]);
-  const [available,    setAvailable]      = useState([]);
+  const [available,    setAvailable]    = useState([]);
 
-  const [playerTeam,   setPlayerTeam]     = useState([]);
-  const [cpuTeam,      setCpuTeam]        = useState([]);
-  const [playerBudget, setPlayerBudget]   = useState(BUDGET);
-  const [cpuBudget,    setCpuBudget]      = useState(BUDGET);
+  const playerTeamRef  = useRef([]);
+  const [playerTeam,   setPlayerTeam]   = useState([]);
 
-  // UI feedback
-  const [justPickedId, setJustPickedId]   = useState(null);
-  const [justPickedBy, setJustPickedBy]   = useState(null);
-  const [cpuThinking,  setCpuThinking]    = useState(false);
-  const [draftDone,    setDraftDone]      = useState(false);
+  const cpuTeamRef     = useRef([]);
+  const [cpuTeam,      setCpuTeam]      = useState([]);
 
-  // Keep ref in sync with state so CPU always reads fresh list
-  const syncAvailable = (list) => {
-    availableRef.current = list;
-    setAvailable(list);
-  };
+  const playerBudgetRef = useRef(BUDGET);
+  const [playerBudget,  setPlayerBudget] = useState(BUDGET);
+
+  const cpuBudgetRef   = useRef(BUDGET);
+  const [cpuBudget,    setCpuBudget]    = useState(BUDGET);
+
+  const [justPickedId, setJustPickedId] = useState(null);
+  const [justPickedBy, setJustPickedBy] = useState(null);
+  const [cpuThinking,  setCpuThinking]  = useState(false);
+  const [draftDone,    setDraftDone]    = useState(false);
+
+  // Lock to prevent any concurrent CPU picks — single source of truth
+  const cpuLock = useRef(false);
 
   const timeouts = useRef([]);
   const after = (ms, fn) => {
@@ -52,123 +59,181 @@ export default function DraftScreen({ onComplete, onBack }) {
   };
   useEffect(() => () => timeouts.current.forEach(clearTimeout), []);
 
-  // Init pool once loaded
-  useEffect(() => {
-    if (!loading && characters.length > 0) {
-      syncAvailable([...characters]);
-    }
-  }, [loading, characters]);
-
-  const currentTurn = snakeOrder[turnIndex];
-  const isDraftOver = turnIndex >= snakeOrder.length;
-
-  // ── Core pick function — immediately removes from pool ──
-  const pick = useCallback((character, by, currentAvailable) => {
-    const cost    = getTierCost(character.stats);
-
-    // Remove from pool IMMEDIATELY so CPU can never pick the same character
-    const nextAvailable = currentAvailable.filter(
-      (c) => c.mal_id !== character.mal_id
-    );
-    syncAvailable(nextAvailable);
-
-    // Flash highlight so player can see who was picked
-    setJustPickedId(character.mal_id);
-    setJustPickedBy(by);
-
-    if (by === 'player') {
-      setPlayerTeam((prev) => [...prev, character]);
-      setPlayerBudget((prev) => prev - cost);
-    } else {
-      setCpuTeam((prev) => [...prev, character]);
-      setCpuBudget((prev) => prev - cost);
-    }
-
-    // Clear highlight after flash duration, then advance turn
-    after(PICKED_FLASH, () => {
-      setJustPickedId(null);
-      setJustPickedBy(null);
-      setTurnIndex((prev) => prev + 1);
-    });
-  }, []);
-
-  // ── CPU turn handler ──
-  // Reads budgets via refs so it always has fresh values
-  const playerBudgetRef = useRef(BUDGET);
-  const cpuBudgetRef    = useRef(BUDGET);
-  const playerTeamRef   = useRef([]);
-  const cpuTeamRef      = useRef([]);
-
-  useEffect(() => { playerBudgetRef.current = playerBudget; }, [playerBudget]);
-  useEffect(() => { cpuBudgetRef.current    = cpuBudget;    }, [cpuBudget]);
-  useEffect(() => { playerTeamRef.current   = playerTeam;   }, [playerTeam]);
-  useEffect(() => { cpuTeamRef.current      = cpuTeam;      }, [cpuTeam]);
-
-  useEffect(() => {
-    if (isDraftOver || currentTurn !== 'cpu' || cpuThinking) return;
-    if (availableRef.current.length === 0) return;
-
+  // ── The one and only function that triggers a CPU pick ──
+  // Takes a snapshot of current state — no stale closures possible
+  const triggerCpuPick = useCallback((currentAvailable, currentCpuBudget, currentPlayerBudget, currentCpuTeam, currentPlayerTeam, currentTurnIndex) => {
+    // Hard lock — if already running, do nothing
+    if (cpuLock.current) return;
+    cpuLock.current = true;
     setCpuThinking(true);
 
-    // Random think time so CPU feels alive, not robotic
     const thinkTime = CPU_THINK_MIN + Math.random() * (CPU_THINK_MAX - CPU_THINK_MIN);
 
     after(thinkTime, () => {
-      const snapshot = availableRef.current;
-      const chosen   = getCpuPick(
-        snapshot,
+      const chosen = getCpuPick(
+        currentAvailable,
+        currentCpuBudget,
+        currentPlayerBudget,
+        currentCpuTeam,
+        currentPlayerTeam
+      );
+
+      if (!chosen) {
+        cpuLock.current = false;
+        setCpuThinking(false);
+        return;
+      }
+
+      const cost        = getTierCost(chosen.stats);
+      const nextAvailable = currentAvailable.filter((c) => c.mal_id !== chosen.mal_id);
+      const nextTurnIndex = currentTurnIndex + 1;
+
+      // Update all refs synchronously
+      availableRef.current    = nextAvailable;
+      cpuTeamRef.current      = [...currentCpuTeam, chosen];
+      cpuBudgetRef.current    = currentCpuBudget - cost;
+      turnIndexRef.current    = nextTurnIndex;
+
+      // Update state for render
+      setAvailable(nextAvailable);
+      setCpuTeam(cpuTeamRef.current);
+      setCpuBudget(cpuBudgetRef.current);
+      setJustPickedId(chosen.mal_id);
+      setJustPickedBy('cpu');
+
+      after(PICKED_FLASH, () => {
+        setJustPickedId(null);
+        setJustPickedBy(null);
+        setTurnIndex(nextTurnIndex);
+
+        // Release lock
+        cpuLock.current = false;
+        setCpuThinking(false);
+
+        // Check if next turn is also CPU — if so, trigger again explicitly
+        const nextWho = snakeOrder[nextTurnIndex];
+        if (nextWho === 'cpu' && nextTurnIndex < snakeOrder.length) {
+          triggerCpuPick(
+            availableRef.current,
+            cpuBudgetRef.current,
+            playerBudgetRef.current,
+            cpuTeamRef.current,
+            playerTeamRef.current,
+            nextTurnIndex
+          );
+        }
+      });
+    });
+  }, [snakeOrder]);
+
+  // ── Init pool once images are ready — then kick off CPU if it goes first ──
+  const poolInitialized = useRef(false);
+  useEffect(() => {
+    if (loading) return;
+    if (poolInitialized.current) return;
+    if (characters.length === 0) return;
+
+    poolInitialized.current  = true;
+    availableRef.current     = [...characters];
+    setAvailable([...characters]);
+
+    // If CPU goes first, trigger it now
+    if (snakeOrder[0] === 'cpu') {
+      triggerCpuPick(
+        [...characters],
         cpuBudgetRef.current,
         playerBudgetRef.current,
         cpuTeamRef.current,
-        playerTeamRef.current
+        playerTeamRef.current,
+        0
       );
-
-      if (chosen) {
-        pick(chosen, 'cpu', snapshot);
-      }
-      setCpuThinking(false);
-    });
-  }, [currentTurn, turnIndex, isDraftOver, available.length]);
+    }
+  }, [loading, characters, snakeOrder, triggerCpuPick]);
 
   // ── Draft complete ──
   useEffect(() => {
-    if (isDraftOver && playerTeam.length === 3) {
+    const isDraftOver = turnIndex >= snakeOrder.length;
+    if (isDraftOver && playerTeamRef.current.length === 3) {
       after(1000, () => setDraftDone(true));
     }
-  }, [isDraftOver, playerTeam.length]);
+  }, [turnIndex, snakeOrder.length]);
 
-  // ── Player pick handler ──
-  const handlePlayerPick = (character) => {
-    if (currentTurn !== 'player' || isDraftOver || cpuThinking) return;
-    if (getTierCost(character.stats) > playerBudget) return;
+  // ── Player pick ──
+  const handlePlayerPick = useCallback((character) => {
+    const isDraftOver = turnIndexRef.current >= snakeOrder.length;
+    const currentTurn = snakeOrder[turnIndexRef.current];
+
+    if (currentTurn !== 'player') return;
+    if (isDraftOver) return;
+    if (cpuLock.current) return;
+
+    const cost = getTierCost(character.stats);
+    if (cost > playerBudgetRef.current) return;
     if (!availableRef.current.find((c) => c.mal_id === character.mal_id)) return;
 
-    pick(character, 'player', availableRef.current);
-  };
+    const nextAvailable = availableRef.current.filter(
+      (c) => c.mal_id !== character.mal_id
+    );
+    const nextTurnIndex  = turnIndexRef.current + 1;
+
+    // Update refs synchronously
+    availableRef.current    = nextAvailable;
+    playerTeamRef.current   = [...playerTeamRef.current, character];
+    playerBudgetRef.current = playerBudgetRef.current - cost;
+    turnIndexRef.current    = nextTurnIndex;
+
+    // Update state for render
+    setAvailable(nextAvailable);
+    setPlayerTeam(playerTeamRef.current);
+    setPlayerBudget(playerBudgetRef.current);
+    setJustPickedId(character.mal_id);
+    setJustPickedBy('player');
+
+    after(PICKED_FLASH, () => {
+      setJustPickedId(null);
+      setJustPickedBy(null);
+      setTurnIndex(nextTurnIndex);
+
+      // If next turn is CPU, trigger explicitly
+      const nextWho = snakeOrder[nextTurnIndex];
+      if (nextWho === 'cpu' && nextTurnIndex < snakeOrder.length) {
+        triggerCpuPick(
+          availableRef.current,
+          cpuBudgetRef.current,
+          playerBudgetRef.current,
+          cpuTeamRef.current,
+          playerTeamRef.current,
+          nextTurnIndex
+        );
+      }
+    });
+  }, [snakeOrder, triggerCpuPick]);
 
   // ── Card state ──
   const getCardState = (character) => {
     if (justPickedId === character.mal_id) {
       return justPickedBy === 'player' ? 'justPicked' : 'cpuPicked';
     }
-    const isAvailable = availableRef.current.find(
-      (c) => c.mal_id === character.mal_id
-    );
-    if (!isAvailable) {
-      if (playerTeam.find((c) => c.mal_id === character.mal_id)) return 'yours';
-      if (cpuTeam.find((c) => c.mal_id === character.mal_id))    return 'cpu';
+    const isAvail = availableRef.current.find((c) => c.mal_id === character.mal_id);
+    if (!isAvail) {
+      if (playerTeamRef.current.find((c) => c.mal_id === character.mal_id)) return 'yours';
+      if (cpuTeamRef.current.find((c) => c.mal_id === character.mal_id))    return 'cpu';
       return 'taken';
     }
-    if (currentTurn !== 'player' || isDraftOver || cpuThinking) return 'waiting';
-    if (getTierCost(character.stats) > playerBudget) return 'disabled';
+    const currentTurn = snakeOrder[turnIndexRef.current];
+    const isDraftOver = turnIndexRef.current >= snakeOrder.length;
+    if (currentTurn !== 'player' || isDraftOver || cpuLock.current) return 'waiting';
+    if (getTierCost(character.stats) > playerBudgetRef.current) return 'disabled';
     return 'available';
   };
 
+  const isDraftOver = turnIndex >= snakeOrder.length;
+  const currentTurn = snakeOrder[turnIndex];
+  const isYourTurn  = currentTurn === 'player' && !isDraftOver && !cpuThinking;
+
   const maxTotal = characters.length > 0
     ? Math.max(...characters.map((c) => totalStats(c.stats)))
-    : 475;
-
-  const isYourTurn = currentTurn === 'player' && !isDraftOver && !cpuThinking;
+    : 495;
 
   const turnLabel = isDraftOver
     ? '✅ DRAFT COMPLETE!'
@@ -188,17 +253,15 @@ export default function DraftScreen({ onComplete, onBack }) {
     <div className={styles.root}>
       <div className={styles.speedLines} />
 
-      {/* Loading */}
       {loading && (
         <div className={styles.loadingWrap}>
           <div className={styles.loadingText}>ASSEMBLING FIGHTERS...</div>
-          <div className={styles.loadingSubtext}>fetching characters from the api</div>
+          <div className={styles.loadingSubtext}>fetching character portraits...</div>
         </div>
       )}
 
       {!loading && (
         <>
-          {/* Header */}
           <div className={styles.header}>
             <button className={styles.backBtn} onClick={onBack}>← BACK</button>
             <div className={styles.titleBadge}>
@@ -221,14 +284,12 @@ export default function DraftScreen({ onComplete, onBack }) {
             </div>
           </div>
 
-          {/* Turn indicator */}
           <div className={styles.turnIndicator}>
             <div key={turnIndex} className={`${styles.turnBadge} ${turnClass}`}>
               {turnLabel}
             </div>
           </div>
 
-          {/* Budget cards */}
           <div className={styles.budgets}>
             <div className={`${styles.budgetCard} ${styles.playerCard}`}>
               <div className={styles.budgetLabel}>
@@ -242,13 +303,10 @@ export default function DraftScreen({ onComplete, onBack }) {
               </div>
               <div className={styles.miniTeam}>
                 {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className={`${styles.miniSlot} ${playerTeam[i] ? styles.filled : ''}`}
-                  >
+                  <div key={i} className={`${styles.miniSlot} ${playerTeam[i] ? styles.filled : ''}`}>
                     {playerTeam[i] ? (
                       <img
-                        src={playerTeam[i].image}
+                        src={images[playerTeam[i].mal_id] || playerTeam[i].image}
                         alt={playerTeam[i].name}
                         onError={(e) => {
                           e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${playerTeam[i].mal_id}`;
@@ -272,13 +330,10 @@ export default function DraftScreen({ onComplete, onBack }) {
               </div>
               <div className={styles.miniTeam}>
                 {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className={`${styles.miniSlot} ${cpuTeam[i] ? styles.filledCpu : ''}`}
-                  >
+                  <div key={i} className={`${styles.miniSlot} ${cpuTeam[i] ? styles.filledCpu : ''}`}>
                     {cpuTeam[i] ? (
                       <img
-                        src={cpuTeam[i].image}
+                        src={images[cpuTeam[i].mal_id] || cpuTeam[i].image}
                         alt={cpuTeam[i].name}
                         onError={(e) => {
                           e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${cpuTeam[i].mal_id}`;
@@ -291,15 +346,14 @@ export default function DraftScreen({ onComplete, onBack }) {
             </div>
           </div>
 
-          {/* Character grid */}
           <div className={styles.grid}>
             {characters.map((character) => {
-              const state     = getCardState(character);
-              const tier      = getTier(character.stats);
-              const cost      = getTierCost(character.stats);
-              const total     = totalStats(character.stats);
-              const tierColor = TIER_COLORS[tier];
-              const isTaken   = ['yours', 'cpu', 'taken'].includes(state);
+              const state      = getCardState(character);
+              const tier       = getTier(character.stats);
+              const cost       = getTierCost(character.stats);
+              const total      = totalStats(character.stats);
+              const tierColor  = TIER_COLORS[tier];
+              const isTaken    = ['yours', 'cpu', 'taken'].includes(state);
               const isDisabled = ['disabled', 'waiting'].includes(state);
 
               return (
@@ -307,14 +361,12 @@ export default function DraftScreen({ onComplete, onBack }) {
                   key={character.mal_id}
                   className={`
                     ${styles.card}
-                    ${isTaken              ? styles.taken     : ''}
-                    ${isDisabled           ? styles.disabled  : ''}
+                    ${isTaken                ? styles.taken     : ''}
+                    ${isDisabled             ? styles.disabled  : ''}
                     ${state === 'justPicked' ? styles.justPicked : ''}
                     ${state === 'cpuPicked'  ? styles.cpuPicked  : ''}
                   `}
-                  onClick={() =>
-                    !isTaken && !isDisabled && handlePlayerPick(character)
-                  }
+                  onClick={() => !isTaken && !isDisabled && handlePlayerPick(character)}
                 >
                   <div
                     className={styles.tierBadge}
@@ -324,16 +376,14 @@ export default function DraftScreen({ onComplete, onBack }) {
                   </div>
 
                   <div
-                    className={`${styles.costBadge} ${
-                      state === 'disabled' ? styles.cantAfford : ''
-                    }`}
+                    className={`${styles.costBadge} ${state === 'disabled' ? styles.cantAfford : ''}`}
                   >
                     {cost}pt{cost !== 1 ? 's' : ''}
                   </div>
 
                   <img
                     className={styles.cardImg}
-                    src={character.image}
+                    src={images[character.mal_id] || character.image}
                     alt={character.name}
                     onError={(e) => {
                       e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.mal_id}`;
@@ -370,14 +420,10 @@ export default function DraftScreen({ onComplete, onBack }) {
                   </div>
 
                   {state === 'yours' && (
-                    <div className={`${styles.ownerLabel} ${styles.you}`}>
-                      ✓ YOUR PICK
-                    </div>
+                    <div className={`${styles.ownerLabel} ${styles.you}`}>✓ YOUR PICK</div>
                   )}
                   {state === 'cpu' && (
-                    <div className={`${styles.ownerLabel} ${styles.cpu}`}>
-                      CPU PICK
-                    </div>
+                    <div className={`${styles.ownerLabel} ${styles.cpu}`}>CPU PICK</div>
                   )}
                 </div>
               );
@@ -386,7 +432,6 @@ export default function DraftScreen({ onComplete, onBack }) {
         </>
       )}
 
-      {/* Draft complete overlay */}
       {draftDone && (
         <div className={styles.draftComplete}>
           <div className={styles.draftCompleteBox}>
@@ -401,7 +446,7 @@ export default function DraftScreen({ onComplete, onBack }) {
                   <div key={c.mal_id} className={styles.draftCompleteSlot}>
                     <img
                       className={styles.draftCompleteImg}
-                      src={c.image}
+                      src={images[c.mal_id] || c.image}
                       alt={c.name}
                       onError={(e) => {
                         e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${c.mal_id}`;
@@ -420,7 +465,10 @@ export default function DraftScreen({ onComplete, onBack }) {
             </div>
             <button
               className={styles.battleBtn}
-              onClick={() => onComplete(playerTeam)}
+              onClick={() => onComplete(playerTeam.map((c) => ({
+                ...c,
+                image: images[c.mal_id] || c.image,
+              })))}
             >
               ⚔️ GO TO BATTLE →
             </button>
