@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useCharacters } from '../hooks/useCharacters';
+import { getRandomCharacters } from '../data/characters';
 import {
   getTier,
   getTierCost,
@@ -17,7 +17,8 @@ const CPU_THINK_MAX  = 2400;
 const PICKED_FLASH   = 900; // ms the "just picked" highlight shows
 
 export default function DraftScreen({ onComplete, onBack }) {
-  const { characters, loading } = useCharacters(12);
+  const [characters] = useState(() => getRandomCharacters(12));
+  const loading = false;
 
   const [snakeOrder]    = useState(() => generateSnakeOrder());
   const [turnIndex,     setTurnIndex]     = useState(0);

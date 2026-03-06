@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { getRandomCharacters } from '../data/characters';
 import {
   MOVES,
   resolveMoveWinner,
@@ -21,13 +22,13 @@ const hpClass = (hp) => {
   return styles.low;
 };
 
-const buildOpponentTeam = (playerTeam, allChars) => {
+// replace buildOpponentTeam to not need allCharacters prop:
+const buildOpponentTeam = (playerTeam) => {
   const usedIds = new Set(playerTeam.map((c) => c.mal_id));
-  return allChars
+  return getRandomCharacters(12)
     .filter((c) => !usedIds.has(c.mal_id))
-    .sort(() => Math.random() - 0.5)
     .slice(0, 3)
-    .map((c) => ({ ...c, hp: INITIAL_HP, powerMultiplier: 1 }));
+    .map((c) => ({ ...c, hp: 1000, powerMultiplier: 1 }));
 };
 
 // ── Stat pills — B: shown inside each fighter card ──
@@ -147,7 +148,6 @@ function FighterCard({
 
 export default function BattleScreen({
   playerTeam: rawPlayerTeam,
-  allCharacters = [],
   onComplete,
 }) {
   const [playerTeam, setPlayerTeam] = useState(() =>
