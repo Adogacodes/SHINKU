@@ -16,6 +16,12 @@
 //    intelligence → tactical IQ + planning ability
 //    stamina      → endurance + recovery
 //
+//  Tier thresholds (total of all 5 stats):
+//    S  463+   ~top 10%  — pinnacle-tier only
+//    A  446+   ~top 30%  — elite fighters
+//    B  423+   ~top 65%  — serious fighters
+//    C  <423   ~bottom 35% — skilled but limited
+//
 //  Images: MAL CDN portrait URLs
 //  Swap any image URL if it looks bad in-game.
 // ─────────────────────────────────────────────────────────────
@@ -111,11 +117,12 @@ export const ALL_CHARACTERS = [
     anime: 'Naruto: Shippuden',
     image: 'https://myanimelist.net/images/characters/6/284123.jpg',
     stats: {
-      power:        88,
-      speed:        90,
-      defense:      80,
+      // Genius-level IQ but stamina was always his weakness (illness)
+      power:        85,
+      speed:        88,
+      defense:      76,
       intelligence: 98,
-      stamina:      65,
+      stamina:      60,
     },
   },
   {
@@ -124,11 +131,11 @@ export const ALL_CHARACTERS = [
     anime: 'Naruto: Shippuden',
     image: 'https://myanimelist.net/images/characters/8/87799.jpg',
     stats: {
-      power:        83,
-      speed:        88,
-      defense:      78,
+      power:        80,
+      speed:        85,
+      defense:      75,
       intelligence: 96,
-      stamina:      75,
+      stamina:      72,
     },
   },
   {
@@ -150,11 +157,11 @@ export const ALL_CHARACTERS = [
     anime: 'Naruto: Shippuden',
     image: 'https://myanimelist.net/images/characters/6/278736.jpg',
     stats: {
-      power:        72,
-      speed:        75,
-      defense:      68,
-      intelligence: 78,
-      stamina:      74,
+      power:        68,
+      speed:        70,
+      defense:      65,
+      intelligence: 75,
+      stamina:      70,
     },
   },
 
@@ -192,11 +199,11 @@ export const ALL_CHARACTERS = [
     anime: 'Jujutsu Kaisen',
     image: 'https://myanimelist.net/images/characters/6/467646.jpg',
     stats: {
-      power:        85,
-      speed:        88,
-      defense:      82,
-      intelligence: 70,
-      stamina:      95,
+      power:        82,
+      speed:        84,
+      defense:      78,
+      intelligence: 66,
+      stamina:      90,
     },
   },
   {
@@ -205,11 +212,11 @@ export const ALL_CHARACTERS = [
     anime: 'Jujutsu Kaisen',
     image: 'https://myanimelist.net/images/characters/11/620495.jpg',
     stats: {
-      power:        82,
-      speed:        90,
-      defense:      80,
-      intelligence: 84,
-      stamina:      85,
+      power:        78,
+      speed:        86,
+      defense:      76,
+      intelligence: 80,
+      stamina:      80,
     },
   },
   {
@@ -218,11 +225,11 @@ export const ALL_CHARACTERS = [
     anime: 'Jujutsu Kaisen',
     image: 'https://myanimelist.net/images/characters/8/435405.jpg',
     stats: {
-      power:        78,
-      speed:        82,
-      defense:      74,
-      intelligence: 88,
-      stamina:      78,
+      power:        72,
+      speed:        76,
+      defense:      70,
+      intelligence: 85,
+      stamina:      72,
     },
   },
 
@@ -234,11 +241,11 @@ export const ALL_CHARACTERS = [
     anime: 'Chainsaw Man',
     image: 'https://myanimelist.net/images/characters/3/492407.jpg',
     stats: {
-      power:        82,
-      speed:        80,
-      defense:      75,
-      intelligence: 58,
-      stamina:      88,
+      power:        78,
+      speed:        75,
+      defense:      70,
+      intelligence: 55,
+      stamina:      85,
     },
   },
   {
@@ -289,11 +296,11 @@ export const ALL_CHARACTERS = [
     anime: 'One Piece',
     image: 'https://myanimelist.net/images/characters/5/136769.jpg',
     stats: {
-      power:        90,
-      speed:        92,
-      defense:      83,
-      intelligence: 82,
-      stamina:      88,
+      power:        88,
+      speed:        90,
+      defense:      80,
+      intelligence: 80,
+      stamina:      85,
     },
   },
   {
@@ -357,11 +364,12 @@ export const ALL_CHARACTERS = [
     anime: 'Bleach',
     image: 'https://myanimelist.net/images/characters/8/150265.jpg',
     stats: {
+      // Raw power monster, but low IQ and limited technique
       power:        95,
-      speed:        87,
-      defense:      90,
-      intelligence: 58,
-      stamina:      97,
+      speed:        84,
+      defense:      88,
+      intelligence: 55,
+      stamina:      95,
     },
   },
   {
@@ -386,11 +394,11 @@ export const ALL_CHARACTERS = [
     anime: 'Hunter x Hunter',
     image: 'https://myanimelist.net/images/characters/11/174517.jpg',
     stats: {
-      power:        88,
-      speed:        87,
-      defense:      80,
-      intelligence: 70,
-      stamina:      92,
+      power:        85,
+      speed:        84,
+      defense:      76,
+      intelligence: 65,
+      stamina:      90,
     },
   },
   {
@@ -399,11 +407,11 @@ export const ALL_CHARACTERS = [
     anime: 'Hunter x Hunter',
     image: 'https://myanimelist.net/images/characters/14/219161.jpg',
     stats: {
-      power:        86,
+      power:        84,
       speed:        96,
-      defense:      82,
-      intelligence: 92,
-      stamina:      88,
+      defense:      80,
+      intelligence: 90,
+      stamina:      86,
     },
   },
   {
@@ -425,11 +433,11 @@ export const ALL_CHARACTERS = [
     anime: 'Hunter x Hunter',
     image: 'https://myanimelist.net/images/characters/3/174561.jpg',
     stats: {
-      power:        89,
-      speed:        91,
-      defense:      85,
-      intelligence: 93,
-      stamina:      87,
+      power:        87,
+      speed:        89,
+      defense:      83,
+      intelligence: 91,
+      stamina:      85,
     },
   },
 
@@ -441,11 +449,11 @@ export const ALL_CHARACTERS = [
     anime: 'Demon Slayer',
     image: 'https://myanimelist.net/images/characters/5/509927.jpg',
     stats: {
-      power:        82,
-      speed:        85,
-      defense:      78,
-      intelligence: 80,
-      stamina:      88,
+      power:        78,
+      speed:        80,
+      defense:      74,
+      intelligence: 76,
+      stamina:      84,
     },
   },
   {
@@ -454,11 +462,12 @@ export const ALL_CHARACTERS = [
     anime: 'Demon Slayer',
     image: 'https://myanimelist.net/images/characters/10/459689.jpg',
     stats: {
-      power:        80,
-      speed:        93,
-      defense:      68,
-      intelligence: 65,
-      stamina:      72,
+      // One insane technique, otherwise very fragile
+      power:        76,
+      speed:        92,
+      defense:      62,
+      intelligence: 60,
+      stamina:      66,
     },
   },
   {
@@ -493,11 +502,11 @@ export const ALL_CHARACTERS = [
     anime: 'Demon Slayer',
     image: 'https://myanimelist.net/images/characters/5/464774.jpg',
     stats: {
-      power:        88,
-      speed:        91,
-      defense:      85,
-      intelligence: 80,
-      stamina:      90,
+      power:        86,
+      speed:        88,
+      defense:      82,
+      intelligence: 76,
+      stamina:      88,
     },
   },
   {
@@ -506,11 +515,11 @@ export const ALL_CHARACTERS = [
     anime: 'Demon Slayer',
     image: 'https://myanimelist.net/images/characters/10/423443.jpg',
     stats: {
-      power:        85,
-      speed:        88,
-      defense:      80,
-      intelligence: 78,
-      stamina:      86,
+      power:        82,
+      speed:        84,
+      defense:      76,
+      intelligence: 74,
+      stamina:      82,
     },
   },
 
@@ -535,11 +544,11 @@ export const ALL_CHARACTERS = [
     anime: 'One Punch Man',
     image: 'https://myanimelist.net/images/characters/3/543830.jpg',
     stats: {
-      power:        93,
-      speed:        88,
-      defense:      88,
-      intelligence: 80,
-      stamina:      82,
+      power:        90,
+      speed:        85,
+      defense:      85,
+      intelligence: 78,
+      stamina:      78,
     },
   },
 
@@ -551,11 +560,11 @@ export const ALL_CHARACTERS = [
     anime: 'Black Clover',
     image: 'https://myanimelist.net/images/characters/16/343860.jpg',
     stats: {
-      power:        88,
-      speed:        87,
-      defense:      82,
-      intelligence: 68,
-      stamina:      96,
+      power:        85,
+      speed:        84,
+      defense:      79,
+      intelligence: 64,
+      stamina:      93,
     },
   },
   {
@@ -564,11 +573,11 @@ export const ALL_CHARACTERS = [
     anime: 'Black Clover',
     image: 'https://myanimelist.net/images/characters/13/338842.jpg',
     stats: {
-      power:        87,
-      speed:        90,
-      defense:      80,
-      intelligence: 85,
-      stamina:      88,
+      power:        84,
+      speed:        87,
+      defense:      76,
+      intelligence: 82,
+      stamina:      84,
     },
   },
 
@@ -580,11 +589,11 @@ export const ALL_CHARACTERS = [
     anime: 'Attack on Titan',
     image: 'https://myanimelist.net/images/characters/4/364456.jpg',
     stats: {
-      power:        84,
+      power:        82,
       speed:        96,
-      defense:      78,
-      intelligence: 90,
-      stamina:      88,
+      defense:      75,
+      intelligence: 88,
+      stamina:      85,
     },
   },
   {
@@ -593,11 +602,11 @@ export const ALL_CHARACTERS = [
     anime: 'Attack on Titan',
     image: 'https://myanimelist.net/images/characters/14/517098.jpg',
     stats: {
-      power:        88,
-      speed:        80,
-      defense:      85,
-      intelligence: 86,
-      stamina:      87,
+      power:        85,
+      speed:        76,
+      defense:      82,
+      intelligence: 84,
+      stamina:      84,
     },
   },
   {
@@ -606,11 +615,11 @@ export const ALL_CHARACTERS = [
     anime: 'Attack on Titan',
     image: 'https://myanimelist.net/images/characters/13/478390.jpg',
     stats: {
-      power:        82,
-      speed:        90,
-      defense:      76,
-      intelligence: 80,
-      stamina:      85,
+      power:        78,
+      speed:        86,
+      defense:      72,
+      intelligence: 76,
+      stamina:      80,
     },
   },
 
@@ -651,11 +660,11 @@ export const ALL_CHARACTERS = [
     anime: 'Fullmetal Alchemist: Brotherhood',
     image: 'https://myanimelist.net/images/characters/11/47177.jpg',
     stats: {
-      power:        78,
-      speed:        82,
-      defense:      72,
+      power:        74,
+      speed:        78,
+      defense:      68,
       intelligence: 93,
-      stamina:      78,
+      stamina:      74,
     },
   },
 
@@ -667,11 +676,11 @@ export const ALL_CHARACTERS = [
     anime: 'Tokyo Ghoul',
     image: 'https://myanimelist.net/images/characters/15/321870.jpg',
     stats: {
-      power:        88,
-      speed:        87,
-      defense:      85,
-      intelligence: 88,
-      stamina:      90,
+      power:        86,
+      speed:        84,
+      defense:      82,
+      intelligence: 85,
+      stamina:      88,
     },
   },
 
@@ -728,11 +737,11 @@ export const ALL_CHARACTERS = [
     anime: 'Inuyasha',
     image: 'https://myanimelist.net/images/characters/11/41190.jpg',
     stats: {
-      power:        84,
-      speed:        86,
-      defense:      82,
-      intelligence: 68,
-      stamina:      88,
+      power:        80,
+      speed:        82,
+      defense:      78,
+      intelligence: 64,
+      stamina:      84,
     },
   },
 
@@ -770,10 +779,10 @@ export const ALL_CHARACTERS = [
     anime: 'Seven Deadly Sins',
     image: 'https://myanimelist.net/images/characters/2/597233.jpg',
     stats: {
-      power:        88,
-      speed:        90,
-      defense:      88,
-      intelligence: 78,
+      power:        86,
+      speed:        88,
+      defense:      85,
+      intelligence: 75,
       stamina:      99,
     },
   },
@@ -786,11 +795,11 @@ export const ALL_CHARACTERS = [
     anime: "JoJo's Bizarre Adventure",
     image: 'https://myanimelist.net/images/characters/13/328191.jpg',
     stats: {
-      power:        90,
-      speed:        94,
-      defense:      88,
-      intelligence: 93,
-      stamina:      87,
+      power:        88,
+      speed:        93,
+      defense:      85,
+      intelligence: 91,
+      stamina:      85,
     },
   },
   {
@@ -799,11 +808,11 @@ export const ALL_CHARACTERS = [
     anime: "JoJo's Bizarre Adventure",
     image: 'https://myanimelist.net/images/characters/12/440231.jpg',
     stats: {
-      power:        88,
-      speed:        90,
-      defense:      84,
-      intelligence: 88,
-      stamina:      84,
+      power:        85,
+      speed:        87,
+      defense:      80,
+      intelligence: 85,
+      stamina:      80,
     },
   },
   {
@@ -812,11 +821,11 @@ export const ALL_CHARACTERS = [
     anime: "JoJo's Bizarre Adventure",
     image: 'https://myanimelist.net/images/characters/7/316615.jpg',
     stats: {
-      power:        78,
-      speed:        80,
-      defense:      74,
-      intelligence: 90,
-      stamina:      78,
+      power:        74,
+      speed:        76,
+      defense:      70,
+      intelligence: 88,
+      stamina:      74,
     },
   },
 
@@ -841,11 +850,11 @@ export const ALL_CHARACTERS = [
     anime: 'My Hero Academia',
     image: 'https://myanimelist.net/images/characters/3/355122.jpg',
     stats: {
-      power:        88,
-      speed:        87,
-      defense:      80,
-      intelligence: 90,
-      stamina:      86,
+      power:        85,
+      speed:        84,
+      defense:      76,
+      intelligence: 88,
+      stamina:      82,
     },
   },
   {
@@ -854,11 +863,11 @@ export const ALL_CHARACTERS = [
     anime: 'My Hero Academia',
     image: 'https://myanimelist.net/images/characters/12/299406.jpg',
     stats: {
-      power:        87,
-      speed:        88,
-      defense:      80,
-      intelligence: 84,
-      stamina:      85,
+      power:        84,
+      speed:        85,
+      defense:      76,
+      intelligence: 81,
+      stamina:      82,
     },
   },
   {
@@ -867,11 +876,11 @@ export const ALL_CHARACTERS = [
     anime: 'My Hero Academia',
     image: 'https://myanimelist.net/images/characters/12/332527.jpg',
     stats: {
-      power:        87,
-      speed:        84,
-      defense:      85,
-      intelligence: 83,
-      stamina:      84,
+      power:        84,
+      speed:        80,
+      defense:      82,
+      intelligence: 80,
+      stamina:      80,
     },
   },
 
@@ -899,11 +908,11 @@ export const ALL_CHARACTERS = [
     anime: 'Sailor Moon',
     image: 'https://myanimelist.net/images/characters/4/312776.jpg',
     stats: {
-      power:        85,
-      speed:        75,
-      defense:      80,
-      intelligence: 62,
-      stamina:      88,
+      power:        82,
+      speed:        70,
+      defense:      76,
+      intelligence: 58,
+      stamina:      84,
     },
   },
 
@@ -915,25 +924,25 @@ export const ALL_CHARACTERS = [
     anime: 'Akame ga Kill',
     image: 'https://myanimelist.net/images/characters/8/253095.jpg',
     stats: {
-      power:        84,
-      speed:        92,
-      defense:      76,
-      intelligence: 82,
-      stamina:      85,
+      power:        80,
+      speed:        88,
+      defense:      72,
+      intelligence: 78,
+      stamina:      80,
     },
   },
-
   {
     mal_id: 65239,
     name: 'Esdeath',
     anime: 'Akame ga Kill',
     image: 'https://myanimelist.net/images/characters/14/478361.jpg',
     stats: {
-      power:        84,
-      speed:        92,
-      defense:      76,
-      intelligence: 82,
-      stamina:      85,
+      // Far stronger than Akame — separated intentionally
+      power:        88,
+      speed:        90,
+      defense:      82,
+      intelligence: 85,
+      stamina:      86,
     },
   },
 
@@ -945,11 +954,11 @@ export const ALL_CHARACTERS = [
     anime: 'Claymore',
     image: 'https://myanimelist.net/images/characters/16/72662.jpg',
     stats: {
-      power:        78,
-      speed:        82,
-      defense:      74,
-      intelligence: 78,
-      stamina:      84,
+      power:        72,
+      speed:        76,
+      defense:      68,
+      intelligence: 74,
+      stamina:      78,
     },
   },
 
@@ -977,11 +986,11 @@ export const ALL_CHARACTERS = [
     anime: 'Yu Yu Hakusho',
     image: 'https://myanimelist.net/images/characters/3/130535.jpg',
     stats: {
-      power:        87,
-      speed:        86,
-      defense:      82,
-      intelligence: 72,
-      stamina:      90,
+      power:        84,
+      speed:        83,
+      defense:      78,
+      intelligence: 68,
+      stamina:      87,
     },
   },
   {
@@ -990,11 +999,11 @@ export const ALL_CHARACTERS = [
     anime: 'Yu Yu Hakusho',
     image: 'https://myanimelist.net/images/characters/13/76077.jpg',
     stats: {
-      power:        86,
-      speed:        95,
-      defense:      78,
-      intelligence: 85,
-      stamina:      82,
+      power:        83,
+      speed:        94,
+      defense:      74,
+      intelligence: 82,
+      stamina:      78,
     },
   },
   {
@@ -1004,10 +1013,10 @@ export const ALL_CHARACTERS = [
     image: 'https://cdn.myanimelist.net/images/characters/11/68547.jpg',
     stats: {
       power:        92,
-      speed:        88,
-      defense:      92,
-      intelligence: 80,
-      stamina:      90,
+      speed:        86,
+      defense:      90,
+      intelligence: 76,
+      stamina:      88,
     },
   },
 
@@ -1019,11 +1028,11 @@ export const ALL_CHARACTERS = [
     anime: 'Fire Force',
     image: 'https://myanimelist.net/images/characters/11/384757.jpg',
     stats: {
-      power:        85,
+      power:        82,
       speed:        94,
-      defense:      78,
-      intelligence: 72,
-      stamina:      84,
+      defense:      74,
+      intelligence: 68,
+      stamina:      80,
     },
   },
   {
@@ -1032,11 +1041,11 @@ export const ALL_CHARACTERS = [
     anime: 'Fire Force',
     image: 'https://myanimelist.net/images/characters/16/396507.jpg',
     stats: {
-      power:        90,
-      speed:        90,
-      defense:      84,
-      intelligence: 82,
-      stamina:      88,
+      power:        88,
+      speed:        87,
+      defense:      80,
+      intelligence: 79,
+      stamina:      84,
     },
   },
 
@@ -1064,11 +1073,11 @@ export const ALL_CHARACTERS = [
     anime: "Hell's Paradise",
     image: 'https://myanimelist.net/images/characters/13/511010.jpg',
     stats: {
-      power:        84,
-      speed:        88,
-      defense:      82,
-      intelligence: 80,
-      stamina:      90,
+      power:        80,
+      speed:        84,
+      defense:      76,
+      intelligence: 76,
+      stamina:      86,
     },
   },
 
@@ -1096,11 +1105,11 @@ export const ALL_CHARACTERS = [
     anime: 'Fairy Tail',
     image: 'https://myanimelist.net/images/characters/12/492254.jpg',
     stats: {
-      power:        86,
-      speed:        84,
-      defense:      88,
-      intelligence: 82,
-      stamina:      87,
+      power:        84,
+      speed:        80,
+      defense:      85,
+      intelligence: 78,
+      stamina:      83,
     },
   },
   {
@@ -1109,11 +1118,11 @@ export const ALL_CHARACTERS = [
     anime: 'Fairy Tail',
     image: 'https://myanimelist.net/images/characters/15/594274.jpg',
     stats: {
-      power:        88,
-      speed:        85,
-      defense:      80,
-      intelligence: 62,
-      stamina:      93,
+      power:        85,
+      speed:        82,
+      defense:      76,
+      intelligence: 58,
+      stamina:      90,
     },
   },
 
@@ -1126,10 +1135,10 @@ export const ALL_CHARACTERS = [
     image: 'https://myanimelist.net/images/characters/12/410288.jpg',
     stats: {
       power:        92,
-      speed:        88,
-      defense:      90,
-      intelligence: 55,
-      stamina:      96,
+      speed:        86,
+      defense:      88,
+      intelligence: 52,
+      stamina:      94,
     },
   },
 
@@ -1141,11 +1150,11 @@ export const ALL_CHARACTERS = [
     anime: 'Vinland Saga',
     image: 'https://myanimelist.net/images/characters/7/483990.jpg',
     stats: {
-      power:        82,
-      speed:        91,
-      defense:      74,
-      intelligence: 82,
-      stamina:      86,
+      power:        78,
+      speed:        87,
+      defense:      70,
+      intelligence: 78,
+      stamina:      82,
     },
   },
 
@@ -1157,11 +1166,11 @@ export const ALL_CHARACTERS = [
     anime: 'Rurouni Kenshin',
     image: 'https://myanimelist.net/images/characters/14/517009.jpg',
     stats: {
-      power:        80,
-      speed:        93,
-      defense:      75,
-      intelligence: 88,
-      stamina:      80,
+      power:        76,
+      speed:        92,
+      defense:      70,
+      intelligence: 86,
+      stamina:      76,
     },
   },
 
@@ -1198,7 +1207,11 @@ export const ALL_CHARACTERS = [
 
 // ─────────────────────────────────────────────────────────────
 //  getRandomCharacters — picks N unique characters at random
-//  Called by DraftScreen to populate the 12-card grid each game
+//  Called by DraftScreen to populate the 12-card grid each game.
+//
+//  NOTE: After calling this, pass the result through
+//  guaranteeAffordablePicks() from gameUtils.js to ensure the
+//  pool always contains at least 3 affordable characters.
 // ─────────────────────────────────────────────────────────────
 export const getRandomCharacters = (count = 12) => {
   return [...ALL_CHARACTERS]

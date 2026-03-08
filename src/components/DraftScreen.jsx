@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getRandomCharacters } from '../data/characters';
+import { getRandomCharacters, ALL_CHARACTERS } from '../data/characters';
 import {
   getTier,
   getTierCost,
@@ -7,45 +7,51 @@ import {
   totalStats,
   generateSnakeOrder,
   getCpuPick,
+  guaranteeAffordablePicks,
 } from '../utils/statEngine';
 import styles from './DraftScreen.module.css';
 
 const STAT_KEYS     = ['power', 'speed', 'defense', 'intelligence', 'stamina'];
 const BUDGET        = 10;
+const TEAM_SIZE     = 3;
 const CPU_THINK_MIN = 1200;
 const CPU_THINK_MAX = 2400;
 const PICKED_FLASH  = 900;
 
+// How many picks does `who` have left from fromIndex onwards (inclusive)
+const picksRemaining = (snakeOrder, fromIndex, who) =>
+  snakeOrder.slice(fromIndex).filter((p) => p === who).length;
+
+// The most this picker can spend on the current pick while keeping
+// 1pt reserved for each remaining pick after this one
+const maxAllowedSpend = (budget, picksLeft) =>
+  budget - (picksLeft - 1);
+
 export default function DraftScreen({ onComplete, onBack }) {
-  const [characters]   = useState(() => getRandomCharacters(12));
-  const [snakeOrder]   = useState(() => generateSnakeOrder());
+  const [characters] = useState(() =>
+    guaranteeAffordablePicks(getRandomCharacters(12), ALL_CHARACTERS, BUDGET)
+  );
+  const [snakeOrder] = useState(() => generateSnakeOrder());
+
+  const [turnIndex,    setTurnIndex]    = useState(0);
+  const [available,    setAvailable]    = useState([]);
+  const [playerTeam,   setPlayerTeam]   = useState([]);
+  const [cpuTeam,      setCpuTeam]      = useState([]);
+  const [playerBudget, setPlayerBudget] = useState(BUDGET);
+  const [cpuBudget,    setCpuBudget]    = useState(BUDGET);
+  const [justPickedId, setJustPickedId] = useState(null);
+  const [justPickedBy, setJustPickedBy] = useState(null);
+  const [cpuThinking,  setCpuThinking]  = useState(false);
+  const [draftDone,    setDraftDone]    = useState(false);
 
   const turnIndexRef    = useRef(0);
-  const [turnIndex,     setTurnIndex]    = useState(0);
-
   const availableRef    = useRef([]);
-  const [available,     setAvailable]    = useState([]);
-
   const playerTeamRef   = useRef([]);
-  const [playerTeam,    setPlayerTeam]   = useState([]);
-
   const cpuTeamRef      = useRef([]);
-  const [cpuTeam,       setCpuTeam]      = useState([]);
-
   const playerBudgetRef = useRef(BUDGET);
-  const [playerBudget,  setPlayerBudget] = useState(BUDGET);
-
   const cpuBudgetRef    = useRef(BUDGET);
-  const [cpuBudget,     setCpuBudget]    = useState(BUDGET);
-
-  const [justPickedId,  setJustPickedId] = useState(null);
-  const [justPickedBy,  setJustPickedBy] = useState(null);
-  const [cpuThinking,   setCpuThinking]  = useState(false);
-  const [draftDone,     setDraftDone]    = useState(false);
-
-  const cpuLock      = useRef(false);
-  const timeouts     = useRef([]);
-  const initialized  = useRef(false);
+  const cpuLock         = useRef(false);
+  const timeouts        = useRef([]);
 
   const schedule = (ms, fn) => {
     const id = setTimeout(fn, ms);
@@ -55,29 +61,58 @@ export default function DraftScreen({ onComplete, onBack }) {
 
   useEffect(() => () => timeouts.current.forEach(clearTimeout), []);
 
-  // ── triggerCpuPick stored in a ref so it's always fresh, never stale ──
-  const triggerCpuPickRef = useRef(null);
-  triggerCpuPickRef.current = (pool, cpuBgt, plrBgt, cpuTm, plrTm, tIdx) => {
+  // ── Init pool once on mount ──
+  useEffect(() => {
+    availableRef.current = [...characters];
+    setAvailable([...characters]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── CPU auto-pick — turnIndex is the single source of truth ──
+  useEffect(() => {
+    if (turnIndex >= snakeOrder.length) return;
+    if (snakeOrder[turnIndex] !== 'cpu') return;
     if (cpuLock.current) return;
+
     cpuLock.current = true;
     setCpuThinking(true);
 
     const thinkTime = CPU_THINK_MIN + Math.random() * (CPU_THINK_MAX - CPU_THINK_MIN);
+    let cancelled   = false;
 
-    schedule(thinkTime, () => {
-      const chosen = getCpuPick(pool, cpuBgt, plrBgt, cpuTm, plrTm);
+    // Snapshot everything now — timeout closure must not read stale refs
+    const snapPool    = availableRef.current;
+    const snapCpuBgt  = cpuBudgetRef.current;
+    const snapPlrBgt  = playerBudgetRef.current;
+    const snapCpuTm   = cpuTeamRef.current;
+    const snapPlrTm   = playerTeamRef.current;
+    const snapTurnIdx = turnIndexRef.current;
+    const cpuLeft     = picksRemaining(snakeOrder, snapTurnIdx, 'cpu');
 
+    const id = schedule(thinkTime, () => {
+      if (cancelled) return;
+
+      const chosen = getCpuPick(
+        snapPool,
+        snapCpuBgt,
+        snapPlrBgt,
+        snapCpuTm,
+        snapPlrTm,
+        cpuLeft,
+      );
+
+      // getCpuPick returns null if nothing is affordable under the reserved rule
       if (!chosen) {
         cpuLock.current = false;
         setCpuThinking(false);
         return;
       }
 
-      const cost         = getTierCost(chosen.stats);
-      const nextPool     = pool.filter((c) => c.mal_id !== chosen.mal_id);
-      const nextTurnIdx  = tIdx + 1;
-      const nextCpuTeam  = [...cpuTm, chosen];
-      const nextCpuBgt   = cpuBgt - cost;
+      const cost        = getTierCost(chosen.stats);
+      const nextPool    = snapPool.filter((c) => c.mal_id !== chosen.mal_id);
+      const nextCpuTeam = [...snapCpuTm, chosen];
+      const nextCpuBgt  = snapCpuBgt - cost;
+      const nextTurnIdx = snapTurnIdx + 1;
 
       availableRef.current = nextPool;
       cpuTeamRef.current   = nextCpuTeam;
@@ -91,59 +126,31 @@ export default function DraftScreen({ onComplete, onBack }) {
       setJustPickedBy('cpu');
 
       schedule(PICKED_FLASH, () => {
+        if (cancelled) return;
         setJustPickedId(null);
         setJustPickedBy(null);
-        setTurnIndex(nextTurnIdx);
         cpuLock.current = false;
         setCpuThinking(false);
-
-        // If next turn is also CPU, chain immediately
-        if (
-          nextTurnIdx < snakeOrder.length &&
-          snakeOrder[nextTurnIdx] === 'cpu'
-        ) {
-          triggerCpuPickRef.current(
-            availableRef.current,
-            cpuBudgetRef.current,
-            playerBudgetRef.current,
-            cpuTeamRef.current,
-            playerTeamRef.current,
-            nextTurnIdx
-          );
-        }
+        setTurnIndex(nextTurnIdx);
       });
     });
-  };
 
-  // ── Init pool exactly once on mount ──
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current  = true;
-    availableRef.current = [...characters];
-    setAvailable([...characters]);
-
-    if (snakeOrder[0] === 'cpu') {
-      // Small delay so React finishes painting before CPU starts
-      schedule(100, () => {
-        triggerCpuPickRef.current(
-          [...characters],
-          cpuBudgetRef.current,
-          playerBudgetRef.current,
-          cpuTeamRef.current,
-          playerTeamRef.current,
-          0
-        );
-      });
-    }
+    return () => {
+      cancelled = true;
+      cpuLock.current = false;
+      setCpuThinking(false);
+      clearTimeout(id);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [turnIndex]);
 
   // ── Draft complete check ──
   useEffect(() => {
-    if (turnIndex >= snakeOrder.length && playerTeamRef.current.length === 3) {
+    if (turnIndex >= snakeOrder.length && playerTeamRef.current.length === TEAM_SIZE) {
       schedule(1000, () => setDraftDone(true));
     }
-  }, [turnIndex, snakeOrder.length]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [turnIndex]);
 
   // ── Player pick ──
   const handlePlayerPick = (character) => {
@@ -151,14 +158,17 @@ export default function DraftScreen({ onComplete, onBack }) {
     if (turnIndexRef.current >= snakeOrder.length) return;
     if (cpuLock.current) return;
 
-    const cost = getTierCost(character.stats);
-    if (cost > playerBudgetRef.current) return;
+    const cost      = getTierCost(character.stats);
+    const plrLeft   = picksRemaining(snakeOrder, turnIndexRef.current, 'player');
+    const maxSpend  = maxAllowedSpend(playerBudgetRef.current, plrLeft);
+
+    if (cost > maxSpend) return;
     if (!availableRef.current.find((c) => c.mal_id === character.mal_id)) return;
 
-    const nextPool      = availableRef.current.filter((c) => c.mal_id !== character.mal_id);
-    const nextTurnIdx   = turnIndexRef.current + 1;
-    const nextPlrTeam   = [...playerTeamRef.current, character];
-    const nextPlrBgt    = playerBudgetRef.current - cost;
+    const nextPool    = availableRef.current.filter((c) => c.mal_id !== character.mal_id);
+    const nextPlrTeam = [...playerTeamRef.current, character];
+    const nextPlrBgt  = playerBudgetRef.current - cost;
+    const nextTurnIdx = turnIndexRef.current + 1;
 
     availableRef.current    = nextPool;
     playerTeamRef.current   = nextPlrTeam;
@@ -175,20 +185,6 @@ export default function DraftScreen({ onComplete, onBack }) {
       setJustPickedId(null);
       setJustPickedBy(null);
       setTurnIndex(nextTurnIdx);
-
-      if (
-        nextTurnIdx < snakeOrder.length &&
-        snakeOrder[nextTurnIdx] === 'cpu'
-      ) {
-        triggerCpuPickRef.current(
-          availableRef.current,
-          cpuBudgetRef.current,
-          playerBudgetRef.current,
-          cpuTeamRef.current,
-          playerTeamRef.current,
-          nextTurnIdx
-        );
-      }
     });
   };
 
@@ -206,7 +202,13 @@ export default function DraftScreen({ onComplete, onBack }) {
     if (snakeOrder[turnIndexRef.current] !== 'player') return 'waiting';
     if (turnIndexRef.current >= snakeOrder.length)     return 'waiting';
     if (cpuLock.current)                               return 'waiting';
-    if (getTierCost(character.stats) > playerBudgetRef.current) return 'disabled';
+
+    // Reserved budget check — card is disabled if spending it would leave
+    // too little budget to cover the remaining picks (min 1pt each)
+    const plrLeft  = picksRemaining(snakeOrder, turnIndexRef.current, 'player');
+    const maxSpend = maxAllowedSpend(playerBudgetRef.current, plrLeft);
+    if (getTierCost(character.stats) > maxSpend) return 'disabled';
+
     return 'available';
   };
 
@@ -265,7 +267,6 @@ export default function DraftScreen({ onComplete, onBack }) {
       </div>
 
       <div className={styles.budgets}>
-
         <div className={`${styles.budgetCard} ${styles.playerCard}`}>
           <div className={styles.budgetLabel}>
             YOUR BUDGET <span>{playerBudget} / {BUDGET} pts</span>
@@ -325,7 +326,6 @@ export default function DraftScreen({ onComplete, onBack }) {
             ))}
           </div>
         </div>
-
       </div>
 
       <div className={styles.grid}>
