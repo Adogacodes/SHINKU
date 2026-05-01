@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { getRandomCharacters } from '../data/characters';
-
+import { useSound } from '../context/SoundContext';
 import {
   MOVES,
   resolveMoveWinner,
@@ -55,7 +55,6 @@ function StatPills({ stats, highlightedStat }) {
 // ── Fighter Card ──
 function FighterCard({
   character,
-  images,
   isPlayer,
   isShaking,
   isPulsing,
@@ -86,9 +85,6 @@ function FighterCard({
     ? isPlayer ? styles.active : styles.activeCpu
     : '';
 
-  // use live fetched image, fall back to hardcoded, fall back to robot
-  const imgSrc =  character.image;
-
   return (
     <div
       className={`
@@ -107,7 +103,7 @@ function FighterCard({
 
       <img
         className={`${styles.fighterImg} ${imgActiveClass}`}
-        src={imgSrc}
+        src={character.image}
         alt={character.name}
         onError={(e) => {
           e.target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.mal_id}`;
@@ -149,6 +145,17 @@ export default function BattleScreen({
   playerTeam: rawPlayerTeam,
   onComplete,
 }) {
+  // ── Sound ──
+  const {
+    playMoveSelect,
+    playDiceRoll,
+    playHit,
+    playClash,
+    playKO,
+    playVictory,
+    playDefeat,
+  } = useSound();
+
   const [playerTeam, setPlayerTeam] = useState(() =>
     rawPlayerTeam.map((c) => ({
       ...c,
@@ -160,8 +167,6 @@ export default function BattleScreen({
   const [opponentTeam, setOpponentTeam] = useState(() =>
     buildOpponentTeam(rawPlayerTeam)
   );
-
-  // fetch live images for all 6 fighters
 
   const [pIndex, setPIndex] = useState(0);
   const [oIndex, setOIndex] = useState(0);
@@ -257,6 +262,7 @@ export default function BattleScreen({
   const handleMove = useCallback((moveKey) => {
     if (phase !== 'choosing') return;
     setPhase('narrating');
+    playMoveSelect(moveKey);
 
     setPlayerHighlightStat(null);
     setOpponentHighlightStat(null);
@@ -278,6 +284,7 @@ export default function BattleScreen({
 
     after(STEP_DELAY * 2, () => {
       if (winner === 'clash') {
+        playClash();
         say(`💥 CLASH! BOTH CHOSE ${moveKey}`, 'dice will decide!', 'gold', '', null);
       } else if (winner === 'player') {
         say(`✅ ${moveKey} BEATS ${aiMove}!`, 'you have the advantage!', 'green', '', 'player');
@@ -289,6 +296,7 @@ export default function BattleScreen({
     });
 
     after(STEP_DELAY * 3, () => {
+      playDiceRoll();
       if (winner === 'clash') {
         const clashPlayerWins = pDice >= oDice;
         say(
@@ -363,6 +371,7 @@ export default function BattleScreen({
 
         flash(playerTakesHit ? 'flashRed' : 'flashWhite');
         showDamageFloat(dmg, playerTakesHit);
+        playHit(dmg > 180);
 
         if (playerTakesHit) setShakingPlayer(true);
         else setShakingOpponent(true);
@@ -384,6 +393,8 @@ export default function BattleScreen({
           const allOpponentDead = nextOIndex >= opponentTeam.length;
 
           if (allPlayerDead || allOpponentDead) {
+            if (allOpponentDead) playVictory();
+            else playDefeat();
             say(
               allOpponentDead ? '🏆 VICTORY!' : '💀 DEFEATED!',
               allOpponentDead ? 'you crushed the enemy team!' : 'your team has fallen...',
@@ -396,6 +407,7 @@ export default function BattleScreen({
           }
 
           if (playerKO || opponentKO) {
+            playKO();
             say(
               playerKO
                 ? `💀 ${updatedPlayer.name} IS DOWN!`
@@ -428,6 +440,8 @@ export default function BattleScreen({
     pIndex, oIndex, say, flash,
     showDamageFloat, pulse, onComplete,
     currentPlayer, currentOpponent,
+    playMoveSelect, playDiceRoll, playHit,
+    playClash, playKO, playVictory, playDefeat,
   ]);
 
   return (
@@ -496,7 +510,6 @@ export default function BattleScreen({
       </div>
 
       <div className={styles.arena}>
-
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <FighterCard
             character={currentPlayer}
@@ -540,7 +553,6 @@ export default function BattleScreen({
             ))}
           </div>
         </div>
-
       </div>
 
       <div className={styles.dialogue}>
@@ -587,7 +599,6 @@ export default function BattleScreen({
           ))}
         </div>
       </div>
-
     </div>
   );
 }

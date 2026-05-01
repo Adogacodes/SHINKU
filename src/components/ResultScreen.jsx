@@ -1,4 +1,6 @@
 import styles from './ResultScreen.module.css';
+import { useSound } from '../context/SoundContext';
+import { useEffect } from 'react';
 
 const INITIAL_HP = 1000;
 
@@ -12,6 +14,15 @@ const hpClass = (hp) => {
 
 export default function ResultScreen({ result, playerTeam = [], onPlayAgain }) {
   const isWin = result === 'win';
+  const { playVictory, playDefeat, playHover, playEnterDraft } = useSound();
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (isWin) playVictory();
+      else playDefeat();
+    }, 400);
+    return () => clearTimeout(t);
+  }, [isWin]); // eslint-disable-line
 
   return (
     <div className={styles.root}>
@@ -88,10 +99,18 @@ export default function ResultScreen({ result, playerTeam = [], onPlayAgain }) {
 
       {/* Actions */}
       <div className={styles.actions}>
-        <button className={styles.playAgainBtn} onClick={onPlayAgain}>
+       <button
+        className={styles.playAgainBtn}
+        onMouseEnter={playHover}
+        onClick={() => { playEnterDraft(); setTimeout(onPlayAgain, 160); }}
+      >
           {isWin ? '⚔️ FIGHT AGAIN' : '🔄 REMATCH'}
         </button>
-        <button className={styles.changeModeBtn} onClick={onPlayAgain}>
+        <button
+        className={styles.changeModeBtn}
+        onMouseEnter={playHover}
+        onClick={onPlayAgain}
+      >
           ← CHANGE MODE
         </button>
       </div>

@@ -1,6 +1,14 @@
 import styles from './ModeSelect.module.css';
+import { useSound } from '../context/SoundContext';
+import { useEffect } from 'react';
 
 export default function ModeSelect({ onSelect }) {
+  const { startMusic, playHover, playEnterDraft } = useSound();
+
+  // Start menu music when screen mounts
+  useEffect(() => { startMusic(1); }, [startMusic]); // Japanese theme on menu
+
+
   return (
     <div className={styles.root}>
       <div className={styles.speedLines} />
@@ -32,7 +40,11 @@ export default function ModeSelect({ onSelect }) {
         </p>
         <button
           className={styles.cardCta}
-          onClick={() => onSelect('draft')}
+          onMouseEnter={playHover}
+          onClick={() => {
+            playEnterDraft();
+            setTimeout(() => onSelect('draft'), 180);
+          }}
         >
           ENTER DRAFT →
         </button>
