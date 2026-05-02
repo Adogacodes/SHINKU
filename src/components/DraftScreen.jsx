@@ -63,7 +63,7 @@ export default function DraftScreen({ onComplete, onBack }) {
 
   // Start orchestral theme on draft screen
   useEffect(() => {
-    startMusic(0);
+    startMusic();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

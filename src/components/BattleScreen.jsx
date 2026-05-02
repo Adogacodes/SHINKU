@@ -147,14 +147,10 @@ export default function BattleScreen({
 }) {
   // ── Sound ──
   const {
-    playMoveSelect,
-    playDiceRoll,
-    playHit,
-    playClash,
-    playKO,
-    playVictory,
-    playDefeat,
-  } = useSound();
+  playMoveSelect, playDiceRoll, playHit,
+  playClash, playKO, playVictory, playDefeat,
+  playKanjiPop, playNewFighter, playAdvantage,
+} = useSound();
 
   const [playerTeam, setPlayerTeam] = useState(() =>
     rawPlayerTeam.map((c) => ({
@@ -210,19 +206,20 @@ export default function BattleScreen({
   useEffect(() => () => timeouts.current.forEach(clearTimeout), []);
 
   const triggerBgAnimations = useCallback(() => {
-    setSpeedBurstKey((k) => k + 1);
-    setShowSpeedBurst(true);
-    setTimeout(() => setShowSpeedBurst(false), 500);
+  setSpeedBurstKey((k) => k + 1);
+  setShowSpeedBurst(true);
+  setTimeout(() => setShowSpeedBurst(false), 500);
 
-    const newKanjis = Array.from({ length: 2 }, (_, i) => ({
-      id:   Date.now() + i,
-      char: KANJI_POOL[Math.floor(Math.random() * KANJI_POOL.length)],
-      x:    Math.random() * 80 + 5,
-      y:    Math.random() * 60 + 10,
-    }));
-    setKanjis(newKanjis);
-    setTimeout(() => setKanjis([]), 2600);
-  }, []);
+  const newKanjis = Array.from({ length: 2 }, (_, i) => ({
+    id:   Date.now() + i,
+    char: KANJI_POOL[Math.floor(Math.random() * KANJI_POOL.length)],
+    x:    Math.random() * 80 + 5,
+    y:    Math.random() * 60 + 10,
+  }));
+  setKanjis(newKanjis);
+  playKanjiPop();                          // ← new
+  setTimeout(() => setKanjis([]), 2600);
+}, [playKanjiPop]);
 
   const say = useCallback((msg, sub = '', color = '', calc = '', portrait = null) => {
     setDialogueMsg(msg);
@@ -371,7 +368,7 @@ export default function BattleScreen({
 
         flash(playerTakesHit ? 'flashRed' : 'flashWhite');
         showDamageFloat(dmg, playerTakesHit);
-        playHit(dmg > 180);
+        playHit(winner === 'player' ? moveKey : winner === 'opponent' ? aiMove : null, dmg > 180);
 
         if (playerTakesHit) setShakingPlayer(true);
         else setShakingOpponent(true);
@@ -420,6 +417,7 @@ export default function BattleScreen({
             after(STEP_DELAY, () => {
               if (playerKO)   setPIndex(nextPIndex);
               if (opponentKO) setOIndex(nextOIndex);
+              playNewFighter();
               setPhase('choosing');
               say('NEW FIGHTER!', 'choose your move!', '', '', null);
             });
@@ -442,6 +440,7 @@ export default function BattleScreen({
     currentPlayer, currentOpponent,
     playMoveSelect, playDiceRoll, playHit,
     playClash, playKO, playVictory, playDefeat,
+     playKanjiPop, playNewFighter, playAdvantage,
   ]);
 
   return (
