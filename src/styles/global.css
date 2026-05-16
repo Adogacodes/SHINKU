@@ -185,3 +185,40 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
+/* ── Mute button ── */
+.muteBtn {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 18px;
+  padding: 4px 10px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 700px) {
+  .muteBtn {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    font-size: 14px;
+    padding: 4px 8px;
+    opacity: 0.7;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .muteBtn:active {
+    opacity: 1;
+  }
+}
+

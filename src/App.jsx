@@ -17,18 +17,12 @@ function MuteButton() {
 
   return (
     <button
-      onClick={handleToggle}
-      style={{
-        position: 'fixed', top: 12, right: 14, zIndex: 9999,
-        background: 'rgba(0,0,0,0.55)', border: '1px solid #555',
-        borderRadius: 8, color: '#fff', fontSize: 18,
-        padding: '4px 10px', cursor: 'pointer',
-        backdropFilter: 'blur(4px)',
-      }}
-      title={muted ? 'Unmute' : 'Mute'}
-    >
-      {muted ? '🔇' : '🔊'}
-    </button>
+  onClick={handleToggle}
+  className="muteBtn"
+  title={muted ? 'Unmute' : 'Mute'}
+>
+  {muted ? '🔇' : '🔊'}
+</button>
   );
 }
 
